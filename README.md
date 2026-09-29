@@ -14,11 +14,27 @@ The first version is a browser-based calendar designer. Users set the month or m
 
 ## Status
 
-This repository starts with the product specification and project README. The browser designer, calendar engine, API, and agent skill are planned follow-on work.
+The repository contains a static app shell (editor and print-preview panes) and the versioned calendar configuration model with validation. The date engine, full editor controls, icon artwork, PDF export, API, and agent skill are planned follow-on work.
+
+## Run locally
+
+The app is static HTML, CSS, and JavaScript modules; it needs no build step or server-side service. Serve the repository root with any static file server and open it in a browser:
+
+```sh
+python3 -m http.server 8000   # or: npm start
+# then open http://localhost:8000/
+```
+
+Run the schema and fixture checks with Node.js 18 or later (no dependencies to install):
+
+```sh
+npm test
+```
 
 ## Documentation
 
 - [Product specification](SPEC.md)
+- [Calendar configuration](docs/configuration.md)
 
 ## Design principles
 

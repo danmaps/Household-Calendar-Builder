@@ -1,0 +1,226 @@
+:root {
+  --ink: #1b1b1b;
+  --muted: #5c5c5c;
+  --line: #c8c8c8;
+  --surface: #f4f4f2;
+  --paper: #ffffff;
+  --accent: #1f5fbf;
+  --error: #b00020;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.app-header nav a {
+  margin-left: 1rem;
+  color: var(--accent);
+}
+
+.app-main {
+  display: grid;
+  grid-template-columns: minmax(20rem, 28rem) 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 52rem) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pane {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-width: 0;
+}
+
+.pane h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.pane h3 {
+  font-size: 0.95rem;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem;
+}
+
+.settings-summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.settings-summary dt {
+  color: var(--muted);
+}
+
+.settings-summary dd {
+  margin: 0;
+}
+
+textarea {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+button {
+  font: inherit;
+  padding: 0.35rem 0.75rem;
+}
+
+button:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.status {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.status.is-error {
+  color: var(--error);
+}
+
+.errors {
+  color: var(--error);
+  font-size: 0.85rem;
+  padding-left: 1.25rem;
+}
+
+.errors code {
+  font-weight: 600;
+}
+
+.pages {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+/* Page boxes use the physical paper aspect ratio. */
+.page {
+  width: 100%;
+  max-width: 60rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.15);
+  padding: 4%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.page[data-paper="letter"][data-orientation="landscape"] { aspect-ratio: 11 / 8.5; }
+.page[data-paper="letter"][data-orientation="portrait"] { aspect-ratio: 8.5 / 11; max-width: 40rem; }
+.page[data-paper="a4"][data-orientation="landscape"] { aspect-ratio: 297 / 210; }
+.page[data-paper="a4"][data-orientation="portrait"] { aspect-ratio: 210 / 297; max-width: 40rem; }
+
+.page[data-decoration="border"],
+.page[data-decoration="paw-prints"] {
+  outline: 2px dashed var(--muted);
+  outline-offset: -1.5%;
+}
+
+.page-title {
+  margin: 0;
+}
+
+.page-title[data-align="left"] { text-align: left; }
+.page-title[data-align="center"] { text-align: center; }
+.page-title[data-align="right"] { text-align: right; }
+.page-title[data-size="small"] { font-size: 1.1rem; }
+.page-title[data-size="medium"] { font-size: 1.5rem; }
+.page-title[data-size="large"] { font-size: 2rem; }
+
+.page-month {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.grid-placeholder {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.task-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.task-key .swatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  margin-right: 0.35em;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.task-key .icon-id {
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
