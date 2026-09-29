@@ -29,9 +29,13 @@ This repository starts with the product specification and project README. The br
 - Keep configuration in the browser in the first version. No account or server is required to create a calendar.
 - Preserve accessible names for task icons and keyboard support for the symbol picker and form.
 
-## Initial example
+## Example output
 
-The dog-care sample calendar for October 2026 demonstrates interval-based tasks, staggered start dates, recognizable SVG symbols, optional color, and a printable one-month layout. October 1, 2026 is a Thursday; tooth brushing is scheduled every other day.
+The October 2026 dog-care calendar is a finished sample: a one-page, monochrome printable with October 1 correctly placed on Thursday and tooth brushing scheduled every other day.
+
+[Download the sample calendar PDF](examples/october-2026-dog-care-calendar-monochrome.pdf)
+
+[![Preview of the October 2026 dog-care calendar](examples/october-2026-dog-care-calendar-monochrome-preview.png)](examples/october-2026-dog-care-calendar-monochrome.pdf)
 
 ## Roadmap
 
