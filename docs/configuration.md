@@ -63,3 +63,13 @@ All dates are date-only strings (`YYYY-MM-DD`) and must be real calendar dates.
 ## Compatibility
 
 `schemaVersion` changes whenever a change could break existing configurations. A later API should accept this same document shape and reuse this validation code.
+
+## Date engine
+
+`src/calendar.js` is a pure module with no browser, UI, or PDF dependency:
+
+- `getMonthGrid(year, month, weekStartsOn = 0)` returns month metadata and a rectangular `weeks` array. Each cell is an ISO date string or `null` for padding. `firstWeekday` uses JavaScript's weekday numbering (0 = Sunday); `firstColumn` is the date 1 position in the selected week layout.
+- `getTaskOccurrences(task, year, month)` returns the task's due dates as sorted `YYYY-MM-DD` strings. Interval rules use the absolute distance from `firstDue`, including when that anchor predates the requested month.
+- `buildCalendar(config)` validates and normalizes the configuration, then returns each selected month with date cells containing `{ date, day, tasks }` and a flat `occurrences` list of `{ date, task }`. Disabled tasks are omitted.
+
+All calculations use UTC date-only values and do not depend on the machine's local timezone or daylight-saving rules. The October 2026 fixture is also exercised through this engine by `npm test`.

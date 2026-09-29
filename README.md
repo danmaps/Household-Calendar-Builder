@@ -14,7 +14,7 @@ The first version is a browser-based calendar designer. Users set the month or m
 
 ## Status
 
-The repository contains a static app shell (editor and print-preview panes) and the versioned calendar configuration model with validation. The date engine, full editor controls, icon artwork, PDF export, API, and agent skill are planned follow-on work.
+The repository contains a static app shell (editor and print-preview panes), a versioned calendar configuration model with validation, and a deterministic date engine for month grids and recurrence occurrences. The full editor controls, icon artwork, PDF export, API, and agent skill are planned follow-on work.
 
 ## Run locally
 
