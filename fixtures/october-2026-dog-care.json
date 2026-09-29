@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "calendar": {
+    "months": [{ "year": 2026, "month": 10 }],
+    "weekStartsOn": 0,
+    "paper": "letter",
+    "orientation": "landscape",
+    "colorMode": "monochrome",
+    "title": "Dog care · October 2026",
+    "showTitle": true,
+    "titleAlign": "center",
+    "titleSize": "medium",
+    "decoration": "none",
+    "showKey": true,
+    "showCheckboxes": false
+  },
+  "tasks": [
+    {
+      "id": "brush-teeth",
+      "name": "Brush teeth",
+      "recurrence": { "type": "interval", "days": 2, "firstDue": "2026-10-01" },
+      "icon": "toothbrush",
+      "color": "#1f6feb",
+      "assignee": null,
+      "enabled": true
+    },
+    {
+      "id": "dental-treat",
+      "name": "Dental treat",
+      "recurrence": { "type": "interval", "days": 3, "firstDue": "2026-10-02" },
+      "icon": "bone",
+      "color": "#b35900",
+      "assignee": null,
+      "enabled": true
+    },
+    {
+      "id": "chew",
+      "name": "Chew",
+      "recurrence": { "type": "interval", "days": 7, "firstDue": "2026-10-04" },
+      "icon": "cookie-bite",
+      "color": "#6f42c1",
+      "assignee": null,
+      "enabled": true
+    },
+    {
+      "id": "grooming",
+      "name": "Grooming",
+      "recurrence": { "type": "weekdays", "weekdays": [6] },
+      "icon": "scissors",
+      "color": "#2e7d32",
+      "assignee": null,
+      "enabled": true
+    },
+    {
+      "id": "nail-trim",
+      "name": "Nail trim",
+      "recurrence": { "type": "monthDates", "dates": [15] },
+      "icon": "paw",
+      "color": null,
+      "assignee": null,
+      "enabled": true
+    }
+  ]
+}
