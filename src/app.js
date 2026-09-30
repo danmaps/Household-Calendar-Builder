@@ -1,5 +1,5 @@
 import { formatError, normalizeConfig, parseConfig, serializeConfig, ConfigValidationError, LIMITS } from "./config.js";
-import { ICON_IDS } from "./icon-ids.js";
+import { ICON_IDS, ICON_CATEGORIES, iconLabel } from "./icon-ids.js";
 import { buildCalendar } from "./calendar.js";
 
 const EXAMPLE_URL = "fixtures/october-2026-dog-care.json";
@@ -90,6 +90,24 @@ function select(value, options, attrs = {}) {
   return node;
 }
 
+function populateIconSelect(node, selected, query = "") {
+  const needle = query.trim().toLowerCase();
+  node.replaceChildren();
+  const selectedCategory = Object.entries(ICON_CATEGORIES).find(([, ids]) => ids.includes(selected))?.[0] ?? "Current";
+  if (needle && !`${selected} ${iconLabel(selected)} ${selectedCategory}`.toLowerCase().includes(needle)) {
+    node.append(el("optgroup", { label: "Current selection" }, [el("option", {
+      value: selected, selected: true, text: `${iconLabel(selected)} (current)`,
+    })]));
+  }
+  for (const [category, ids] of Object.entries(ICON_CATEGORIES)) {
+    const matches = ids.filter((id) => `${id} ${iconLabel(id)} ${category}`.toLowerCase().includes(needle));
+    if (!matches.length) continue;
+    node.append(el("optgroup", { label: category }, matches.map((id) => el("option", {
+      value: id, selected: id === selected, text: iconLabel(id),
+    }))));
+  }
+}
+
 function renderCalendarControls(config) {
   const c = config.calendar;
   const first = c.months[0];
@@ -103,6 +121,13 @@ function renderCalendarControls(config) {
     field("Paper", select(c.paper, [["letter", "US Letter"], ["a4", "A4"]], { "data-calendar": "paper" })),
     field("Orientation", select(c.orientation, [["landscape", "Landscape"], ["portrait", "Portrait"]], { "data-calendar": "orientation" })),
     field("Color", select(c.colorMode, [["monochrome", "Monochrome"], ["color", "Color"]], { "data-calendar": "colorMode" })),
+    field("Show title", input("checkbox", "", { checked: c.showTitle, "data-calendar": "showTitle" })),
+    field("Calendar title", input("text", c.title, { maxlength: LIMITS.maxTitleLength, "data-calendar": "title" })),
+    field("Title alignment", select(c.titleAlign, [["left", "Left"], ["center", "Center"], ["right", "Right"]], { "data-calendar": "titleAlign" })),
+    field("Title size", select(c.titleSize, [["small", "Small"], ["medium", "Medium"], ["large", "Large"]], { "data-calendar": "titleSize" })),
+    field("Decoration", select(c.decoration, [["none", "None"], ["border", "Border"], ["paw-prints", "Paw prints"]], { "data-calendar": "decoration" })),
+    field("Show task key", input("checkbox", "", { checked: c.showKey, "data-calendar": "showKey" })),
+    field("Show checkboxes", input("checkbox", "", { checked: c.showCheckboxes, "data-calendar": "showCheckboxes" })),
   );
 }
 
@@ -134,16 +159,24 @@ function renderTasks(config) {
     const legend = el("legend", {}, [task.name || `Task ${index + 1}`]);
     const name = input("text", task.name, { maxlength: LIMITS.maxNameLength, required: "", "data-error-path": `tasks[${index}].name`, "data-task": index, "data-field": "name" });
     const recurrence = select(task.recurrence.type, [["interval", "Every N days"], ["weekdays", "Selected weekdays"], ["monthDates", "Dates each month"], ["once", "One-time dates"]], { "data-task": index, "data-field": "recurrenceType" });
-    const icon = select(task.icon, ICON_IDS.map((id) => [id, id.replaceAll("-", " ")]), { "data-error-path": `tasks[${index}].icon`, "data-task": index, "data-field": "icon" });
+    const icon = el("select", { "data-task": index, "data-field": "icon", "data-error-path": `tasks[${index}].icon`, "aria-label": `Symbol for ${task.name}` });
+    populateIconSelect(icon, task.icon);
+    const iconSearch = input("search", "", { placeholder: "Search symbols", "data-task": index, "data-icon-search": "", "aria-label": `Search symbols for ${task.name}` });
+    const iconChoice = el("div", { class: "icon-choice" }, [
+      el("img", { class: "icon-sample", src: `assets/icons/${task.icon}.svg`, alt: `${iconLabel(task.icon)} symbol` }),
+      el("div", { class: "icon-fields" }, [field("Find a symbol", iconSearch), field("Symbol", icon)]),
+    ]);
     const assignee = input("text", task.assignee ?? "", { maxlength: LIMITS.maxAssigneeLength, placeholder: "Optional", "data-error-path": `tasks[${index}].assignee`, "data-task": index, "data-field": "assignee" });
     const enabled = input("checkbox", "", { checked: task.enabled, "data-task": index, "data-field": "enabled" });
+    const customColor = input("checkbox", "", { checked: task.color !== null, "data-task": index, "data-field": "colorEnabled" });
+    const color = input("color", task.color ?? "#1f6feb", { disabled: task.color === null, "data-task": index, "data-field": "color" });
     const actions = el("div", { class: "task-actions" }, [
       el("button", { type: "button", "data-action": "up", "data-task": index, disabled: index === 0, text: "Move up" }),
       el("button", { type: "button", "data-action": "down", "data-task": index, disabled: index === config.tasks.length - 1, text: "Move down" }),
       el("button", { type: "button", "data-action": "remove", "data-task": index, text: "Remove" }),
     ]);
     card.append(legend,
-      el("div", { class: "task-fields" }, [field("Task name", name), field("Repeat", recurrence), field("Symbol", icon), field("Assigned to", assignee), el("label", { class: "check" }, [enabled, "Enabled"])]),
+      el("div", { class: "task-fields" }, [field("Task name", name), field("Repeat", recurrence), iconChoice, field("Assigned to", assignee), field("Custom color", customColor), field("Task color", color), el("label", { class: "check" }, [enabled, "Enabled"])]),
       recurrenceControl(task, index), actions);
     return card;
   }));
@@ -225,6 +258,10 @@ function applyFormChange(target) {
       const controlValue = els.form.querySelector(`[data-calendar="${fieldName}"]`).value;
       currentConfig.calendar[fieldName] = fieldName === "weekStartsOn" ? Number(controlValue) : controlValue;
     }
+    for (const key of ["showTitle", "title", "titleAlign", "titleSize", "decoration", "showKey", "showCheckboxes"]) {
+      const control = els.form.querySelector(`[data-calendar="${key}"]`);
+      currentConfig.calendar[key] = control.type === "checkbox" ? control.checked : control.value;
+    }
   } else if (target.dataset.field && currentConfig.tasks[taskIndex]) {
     const task = currentConfig.tasks[taskIndex];
     switch (target.dataset.field) {
@@ -232,6 +269,8 @@ function applyFormChange(target) {
       case "icon": task.icon = target.value; break;
       case "assignee": task.assignee = target.value.trim() || null; break;
       case "enabled": task.enabled = target.checked; break;
+      case "colorEnabled": task.color = target.checked ? "#1f6feb" : null; break;
+      case "color": task.color = target.value; break;
       case "recurrenceType":
         {
           const first = currentConfig.calendar.months[0];
@@ -267,6 +306,15 @@ function handleFormChange(event) {
     showFieldErrors(errors);
     setStatus(err.message, true);
   }
+}
+
+function handleIconSearch(event) {
+  const search = event.target.closest("[data-icon-search]");
+  if (!search) return;
+  const card = search.closest(".task-card");
+  const selectNode = card.querySelector('select[data-field="icon"]');
+  const selected = currentConfig.tasks[Number(search.dataset.task)]?.icon ?? "";
+  populateIconSelect(selectNode, selected, search.value);
 }
 
 function handleTaskAction(event) {
@@ -332,6 +380,7 @@ els.loadExample.addEventListener("click", loadExample);
 els.download.addEventListener("click", downloadConfig);
 els.form.addEventListener("change", handleFormChange);
 els.taskList.addEventListener("click", handleTaskAction);
+els.taskList.addEventListener("input", handleIconSearch);
 document.getElementById("add-task").addEventListener("click", addTask);
 
 applyConfig(currentConfig);

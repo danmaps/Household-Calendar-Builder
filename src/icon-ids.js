@@ -46,6 +46,20 @@ export const ICON_IDS = Object.freeze([
   "circle-check",
 ]);
 
+export const ICON_CATEGORIES = Object.freeze({
+  "Pet care": Object.freeze(["toothbrush", "tooth", "bone", "paw", "dog", "cat", "scissors", "shower", "pills", "syringe"]),
+  Household: Object.freeze(["bed", "shirt", "basket-shopping", "trash-can", "recycle"]),
+  Cleaning: Object.freeze(["broom", "soap", "spray-can", "hand-sparkles"]),
+  Garden: Object.freeze(["seedling", "leaf", "droplet", "sun"]),
+  Food: Object.freeze(["utensils", "mug-hot", "cookie-bite"]),
+  Maintenance: Object.freeze(["wrench", "fan", "bell", "fire-extinguisher", "screwdriver-wrench"]),
+  General: Object.freeze(["star", "heart", "circle-check"]),
+});
+
+export function iconLabel(id) {
+  return id.replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 const ICON_ID_SET = new Set(ICON_IDS);
 
 export function isKnownIconId(id) {
