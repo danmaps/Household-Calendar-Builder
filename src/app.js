@@ -57,6 +57,24 @@ function showErrors(errors) {
   );
 }
 
+function showFieldErrors(errors) {
+  showErrors(errors);
+  const controls = [...els.form.querySelectorAll("[data-error-path]")];
+  for (const [index, error] of errors.entries()) {
+    const related = controls.filter((node) => node.dataset.errorPath === error.path
+      || error.path.startsWith(`${node.dataset.errorPath}[`));
+    const control = related[0];
+    if (!control) continue;
+    const target = control.closest(".field, .weekday-group") ?? control.parentElement;
+    const id = `config-error-${index}`;
+    for (const relatedControl of related) {
+      relatedControl.setAttribute("aria-invalid", "true");
+      relatedControl.setAttribute("aria-describedby", id);
+    }
+    target.append(el("small", { id, class: "field-error", text: error.message }));
+  }
+}
+
 function field(label, control, hint = "") {
   const wrapper = el("label", { class: "field" }, [el("span", { class: "field-label", text: label }), control]);
   if (hint) wrapper.append(el("small", { class: "hint", text: hint }));
@@ -77,10 +95,10 @@ function renderCalendarControls(config) {
   const first = c.months[0];
   const last = c.months.at(-1);
   els.months.replaceChildren(
-    field("From", select(first.month, MONTH_NAMES.map((name, i) => [i + 1, name]), { "data-calendar": "startMonth" })),
-    field("Year", input("number", first.year, { min: LIMITS.minYear, max: LIMITS.maxYear, required: "", "data-calendar": "startYear" })),
-    field("Through", select(last.month, MONTH_NAMES.map((name, i) => [i + 1, name]), { "data-calendar": "endMonth" })),
-    field("Year", input("number", last.year, { min: LIMITS.minYear, max: LIMITS.maxYear, required: "", "data-calendar": "endYear" })),
+    field("From", select(first.month, MONTH_NAMES.map((name, i) => [i + 1, name]), { "data-calendar": "startMonth", "data-error-path": "calendar.months" })),
+    field("Year", input("number", first.year, { min: LIMITS.minYear, max: LIMITS.maxYear, required: "", "data-calendar": "startYear", "data-error-path": "calendar.months" })),
+    field("Through", select(last.month, MONTH_NAMES.map((name, i) => [i + 1, name]), { "data-calendar": "endMonth", "data-error-path": "calendar.months" })),
+    field("Year", input("number", last.year, { min: LIMITS.minYear, max: LIMITS.maxYear, required: "", "data-calendar": "endYear", "data-error-path": "calendar.months" })),
     field("Week starts", select(c.weekStartsOn, [[0, "Sunday"], [1, "Monday"]], { "data-calendar": "weekStartsOn" })),
     field("Paper", select(c.paper, [["letter", "US Letter"], ["a4", "A4"]], { "data-calendar": "paper" })),
     field("Orientation", select(c.orientation, [["landscape", "Landscape"], ["portrait", "Portrait"]], { "data-calendar": "orientation" })),
@@ -93,19 +111,19 @@ function recurrenceControl(task, index) {
   const wrap = el("div", { class: "recurrence-fields" });
   const attr = (name) => ({ "data-task": index, "data-recurrence": name });
   if (r.type === "interval") {
-    wrap.append(field("Every N days", input("number", r.days, { min: 1, max: LIMITS.maxIntervalDays, required: "", ...attr("days") })),
-      field("First due date", input("date", r.firstDue, { required: "", ...attr("firstDue") }), "Repeats at this interval from the anchor date."));
+    wrap.append(field("Every N days", input("number", r.days, { min: 1, max: LIMITS.maxIntervalDays, required: "", "data-error-path": `tasks[${index}].recurrence.days`, ...attr("days") })),
+      field("First due date", input("date", r.firstDue, { required: "", "data-error-path": `tasks[${index}].recurrence.firstDue`, ...attr("firstDue") }), "Repeats at this interval from the anchor date."));
   } else if (r.type === "weekdays") {
     const group = el("fieldset", { class: "weekday-group" }, [el("legend", { text: "Weekdays" })]);
     group.append(el("div", { class: "checks" }, ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((name, day) => {
-      const box = input("checkbox", "", { checked: r.weekdays.includes(day), value: day, ...attr("weekdays") });
+      const box = input("checkbox", "", { checked: r.weekdays.includes(day), value: day, "data-error-path": `tasks[${index}].recurrence.weekdays`, ...attr("weekdays") });
       return el("label", { class: "check" }, [box, name]);
     })));
     wrap.append(group);
   } else if (r.type === "monthDates") {
-    wrap.append(field("Days of month", input("text", r.dates.join(", "), { placeholder: "1, 15, 30", ...attr("dates") }), "Comma-separated day numbers. Dates beyond a short month are skipped."));
+    wrap.append(field("Days of month", input("text", r.dates.join(", "), { placeholder: "1, 15, 30", "data-error-path": `tasks[${index}].recurrence.dates`, ...attr("dates") }), "Comma-separated day numbers. Dates beyond a short month are skipped."));
   } else {
-    wrap.append(field("One-time dates", input("text", r.dates.join(", "), { placeholder: "2026-10-01, 2026-10-20", ...attr("dates") }), "Comma-separated YYYY-MM-DD dates."));
+    wrap.append(field("One-time dates", input("text", r.dates.join(", "), { placeholder: "2026-10-01, 2026-10-20", "data-error-path": `tasks[${index}].recurrence.dates`, ...attr("dates") }), "Comma-separated YYYY-MM-DD dates."));
   }
   return wrap;
 }
@@ -114,10 +132,10 @@ function renderTasks(config) {
   els.taskList.replaceChildren(...config.tasks.map((task, index) => {
     const card = el("fieldset", { class: "task-card" });
     const legend = el("legend", {}, [task.name || `Task ${index + 1}`]);
-    const name = input("text", task.name, { maxlength: LIMITS.maxNameLength, required: "", "data-task": index, "data-field": "name" });
+    const name = input("text", task.name, { maxlength: LIMITS.maxNameLength, required: "", "data-error-path": `tasks[${index}].name`, "data-task": index, "data-field": "name" });
     const recurrence = select(task.recurrence.type, [["interval", "Every N days"], ["weekdays", "Selected weekdays"], ["monthDates", "Dates each month"], ["once", "One-time dates"]], { "data-task": index, "data-field": "recurrenceType" });
-    const icon = select(task.icon, ICON_IDS.map((id) => [id, id.replaceAll("-", " ")]), { "data-task": index, "data-field": "icon" });
-    const assignee = input("text", task.assignee ?? "", { maxlength: LIMITS.maxAssigneeLength, placeholder: "Optional", "data-task": index, "data-field": "assignee" });
+    const icon = select(task.icon, ICON_IDS.map((id) => [id, id.replaceAll("-", " ")]), { "data-error-path": `tasks[${index}].icon`, "data-task": index, "data-field": "icon" });
+    const assignee = input("text", task.assignee ?? "", { maxlength: LIMITS.maxAssigneeLength, placeholder: "Optional", "data-error-path": `tasks[${index}].assignee`, "data-task": index, "data-field": "assignee" });
     const enabled = input("checkbox", "", { checked: task.enabled, "data-task": index, "data-field": "enabled" });
     const actions = el("div", { class: "task-actions" }, [
       el("button", { type: "button", "data-action": "up", "data-task": index, disabled: index === 0, text: "Move up" }),
@@ -230,7 +248,7 @@ function applyFormChange(target) {
     if (target.dataset.recurrence === "firstDue") recurrence.firstDue = target.value;
     if (target.dataset.recurrence === "weekdays") {
       const selected = [...els.taskList.querySelectorAll(`[data-task="${taskIndex}"][data-recurrence="weekdays"]:checked`)].map((box) => Number(box.value));
-      recurrence.weekdays = selected.length ? selected : [0];
+      recurrence.weekdays = selected;
     }
     if (target.dataset.recurrence === "dates") recurrence.dates = target.value.split(",").map((v) => v.trim()).filter(Boolean).map((v) => recurrence.type === "monthDates" ? Number(v) : v);
   }
@@ -245,6 +263,8 @@ function handleFormChange(event) {
   catch (err) {
     currentConfig = previous;
     renderEditor(previous);
+    const errors = err instanceof ConfigValidationError ? err.errors : [{ path: "calendar.months", message: err.message }];
+    showFieldErrors(errors);
     setStatus(err.message, true);
   }
 }
