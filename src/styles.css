@@ -274,15 +274,6 @@ a:focus-visible {
 .task-key img, .task-key canvas.pdf-icon { width: 1rem; height: 1rem; }
 .task-key .swatch { width: 0.65rem; height: 0.65rem; border: 2px solid var(--line); border-radius: 50%; }
 
-@media (max-width: 34rem) {
-  .calendar-grid th { font-size: 0.65rem; }
-  .weekday-long { display: none; }
-  .weekday-short { display: inline; }
-  .calendar-grid td { padding: 0.12rem; }
-  .day-number { font-size: 0.75rem; }
-  .task-mark img, .task-mark canvas.pdf-icon { width: 0.95rem; height: 0.95rem; }
-}
-
 @media print {
   html, body { width: 100%; height: auto; margin: 0; background: #fff; }
   .app-header, .editor, #preview-heading, #preview-navigation, #preview-warning, .preview-actions, #pages { display: none !important; }
@@ -523,8 +514,6 @@ textarea { display: block; min-height: 14rem; font-family: ui-monospace, SFMono-
   .app-main { width: min(100% - 1rem, 48rem); min-height: auto; grid-template-columns: minmax(0, 1fr); padding: 1.1rem; gap: 1.4rem; }
   .preview { position: static; grid-column: 1; grid-row: 1; }
   .editor { grid-column: 1; grid-row: 2; }
-  .page-month { font-size: clamp(1.45rem, 6vw, 2.5rem); }
-  .calendar-grid th { font-size: 0.76rem; }
 }
 @media (max-width: 36rem) {
   .app-header { display: grid; gap: 0.75rem; padding: 0.75rem; }
@@ -534,17 +523,105 @@ textarea { display: block; min-height: 14rem; font-family: ui-monospace, SFMono-
   .app-main { width: calc(100% - 0.75rem); padding: 0.75rem; border-radius: 0.65rem; }
   .settings-grid, .task-fields, .recurrence-fields, .icon-fields { grid-template-columns: minmax(0, 1fr); }
   .settings-grid .field { grid-template-columns: minmax(6rem, 0.7fr) minmax(0, 1fr); }
-  .calendar-grid th { padding: 0.25rem 0; font-size: 0.68rem; }
-  .weekday-long { display: none; }
-  .weekday-short { display: inline; }
-  .calendar-grid td { height: auto; min-height: 3.4rem; padding: 0.15rem; }
-  .day-number { font-size: 0.78rem; }
-  .task-mark img, .task-mark canvas.pdf-icon { width: 0.85rem; height: 0.85rem; }
-  .task-mark { gap: 0.05rem; padding: 0; }
-  .page { padding: 2.5% !important; }
 }
 @media print {
   .app-header, .editor, #preview-heading, #preview-navigation, #preview-warning, .preview-actions, #pages { display: none !important; }
   .app-main { display: block; width: 100%; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: #fff; }
   .pane.preview { position: static; margin: 0; padding: 0; }
 }
+
+/* Calendar content uses paper geometry at every viewport. Only its outer
+   frame scales; the grid, type and marks never reflow at phone breakpoints. */
+.pages {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+  padding: 0.25rem 0 0.55rem;
+}
+.page-frame {
+  position: relative;
+  margin: 0 auto;
+  flex: none;
+}
+.page-frame > .page {
+  position: absolute;
+  inset: 0 auto auto 0;
+  max-width: none;
+  transform: scale(var(--page-scale, 1));
+  transform-origin: top left;
+}
+.page {
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+.page .page-title { line-height: 1.15; }
+.page .page-month { font-size: 2.2rem; line-height: 1.05; }
+.page .calendar-grid th { padding: 0.045in 0.02in; font-size: 0.12in; line-height: 1.1; }
+.page .calendar-grid td {
+  position: relative;
+  height: calc(100% / var(--week-count));
+  min-height: 0;
+  padding: 0;
+  vertical-align: top;
+  overflow: hidden;
+}
+.page[data-show-checkboxes="true"] .day-tasks { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.page .weekday-long { display: inline; }
+.page .weekday-short { display: none; }
+.day-cell-content {
+  position: absolute;
+  inset: 0.04in 0.05in;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page .day-number { flex: none; font-size: 0.13in; line-height: 1.15; }
+.page .day-tasks {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 0.15in;
+  align-content: start;
+  align-items: center;
+  gap: 0.015in 0.025in;
+  max-height: 0.32in;
+  margin-top: 0.025in;
+  overflow: hidden;
+}
+.page .task-mark {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.015in;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+.page .task-mark img, .page .task-mark canvas.pdf-icon {
+  display: block;
+  width: 0.125in;
+  height: 0.125in;
+  flex: none;
+  object-fit: contain;
+}
+.page .task-mark input { width: 0.1in; height: 0.1in; flex: none; margin: 0; }
+.page[data-show-checkboxes="true"] .task-mark img,
+.page[data-show-checkboxes="true"] .task-mark canvas.pdf-icon { width: 0.095in; height: 0.095in; }
+.page[data-show-checkboxes="true"] .task-mark input { width: 0.075in; height: 0.075in; }
+.page .more-tasks {
+  grid-column: span 2;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 0.09in;
+  font-weight: 700;
+  line-height: 0.16in;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+.page .task-key { max-width: 100%; font-size: 0.105in; line-height: 1.25; }
+.page .task-key li { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }

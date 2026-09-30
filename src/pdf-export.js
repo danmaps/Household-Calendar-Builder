@@ -1,4 +1,5 @@
 import { buildCalendar } from "./calendar.js";
+import { paperDimensionsInches } from "./presentation.js";
 
 const LIBRARIES = [
   ["../vendor/html2canvas.min.js", () => typeof window.html2canvas === "function"],
@@ -69,8 +70,9 @@ export async function downloadCalendarPdf(config, createPage, stage) {
   pdf.setProperties({ title: calendar.showTitle ? calendar.title : "Household calendar", subject: "Household task calendar" });
   const widthPoints = pdf.internal.pageSize.getWidth();
   const heightPoints = pdf.internal.pageSize.getHeight();
-  const cssWidth = Math.ceil(widthPoints / 72 * 96);
-  const cssHeight = Math.ceil(heightPoints / 72 * 96);
+  const [pageWidthInches, pageHeightInches] = paperDimensionsInches(calendar);
+  const cssWidth = pageWidthInches * 96;
+  const cssHeight = pageHeightInches * 96;
 
   const model = buildCalendar(config);
   for (let index = 0; index < model.months.length; index += 1) {

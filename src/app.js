@@ -1,6 +1,7 @@
 import { formatError, normalizeConfig, parseConfig, serializeConfig, ConfigValidationError, LIMITS } from "./config.js";
 import { ICON_IDS, ICON_CATEGORIES, iconLabel } from "./icon-ids.js";
 import { buildCalendar } from "./calendar.js";
+import { paperDimensionsInches, splitTaskMarks } from "./presentation.js";
 
 const EXAMPLE_URL = "fixtures/october-2026-dog-care.json";
 const MONTH_NAMES = [
@@ -38,6 +39,23 @@ const els = {
 
 let currentConfig = normalizeConfig(FALLBACK_CONFIG);
 let currentPageIndex = 0;
+
+function updatePreviewFrames() {
+  for (const frame of els.pages.querySelectorAll(".page-frame")) {
+    const width = Number(frame.dataset.pageWidthPx);
+    const height = Number(frame.dataset.pageHeightPx);
+    if (!width || !height) continue;
+    const available = frame.parentElement?.clientWidth || width;
+    const scale = Math.max(0.65, Math.min(1, available / width));
+    frame.style.width = `${width * scale}px`;
+    frame.style.height = `${height * scale}px`;
+    frame.style.setProperty("--page-scale", scale);
+  }
+}
+
+const previewResizeObserver = typeof ResizeObserver === "function"
+  ? new ResizeObserver(updatePreviewFrames)
+  : null;
 
 function el(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -220,7 +238,7 @@ function createCalendarPage(config, active) {
   const page = el("article", {
     class: "page",
     "aria-label": `Calendar page: ${monthLabel}`,
-    dataset: { paper: c.paper, orientation: c.orientation, colorMode: c.colorMode, decoration: c.decoration },
+    dataset: { paper: c.paper, orientation: c.orientation, colorMode: c.colorMode, decoration: c.decoration, showCheckboxes: String(c.showCheckboxes) },
   });
   page.style.padding = `${c.marginInches}in`;
   if (c.showTitle) {
@@ -242,24 +260,37 @@ function createCalendarPage(config, active) {
     for (const cell of week) {
       const td = el("td", { class: cell.date ? "day-cell" : "day-cell is-empty" });
       if (cell.date) {
+        const cellContent = el("div", { class: "day-cell-content" });
         const date = new Date(`${cell.date}T00:00:00Z`);
         const dateLabel = new Intl.DateTimeFormat("en", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(date);
-        td.append(el("span", { class: "day-number", text: String(cell.day) }));
+        cellContent.append(el("span", { class: "day-number", text: String(cell.day) }));
         if (cell.tasks.length) {
           const marks = el("div", { class: "day-tasks", "aria-label": `Tasks for ${dateLabel}` });
-          for (const task of cell.tasks) {
+          const { visible, overflow } = splitTaskMarks(cell.tasks);
+          for (const task of visible) {
             const taskLabel = task.assignee ? `${task.name}, assigned to ${task.assignee}` : task.name;
-            const mark = el("div", { class: "task-mark", ...(c.showCheckboxes ? {} : { role: "img", "aria-label": taskLabel }), title: taskLabel });
+            const mark = el("div", { class: "task-mark", role: "img", "aria-label": taskLabel, title: taskLabel });
             if (c.colorMode === "color" && task.color) mark.style.borderColor = task.color;
             if (c.showCheckboxes) {
-              const check = el("input", { type: "checkbox", "aria-label": `Mark ${task.name} complete on ${dateLabel}` });
+              const check = el("input", { type: "checkbox", disabled: "", "aria-hidden": "true", tabindex: "-1" });
               mark.append(check);
             }
             mark.append(el("img", { src: `assets/icons/${task.icon}.svg`, alt: "", "aria-hidden": "true" }));
             marks.append(mark);
           }
-          td.append(marks);
+          if (overflow.length) {
+            const taskNames = overflow.map((task) => task.assignee ? `${task.name}, assigned to ${task.assignee}` : task.name).join("; ");
+            marks.append(el("span", {
+              class: "more-tasks",
+              role: "note",
+              "aria-label": `${overflow.length} more tasks: ${taskNames}`,
+              title: `${overflow.length} more: ${taskNames}`,
+              text: `+${overflow.length}`,
+            }));
+          }
+          cellContent.append(marks);
         }
+        td.append(cellContent);
       }
       row.append(td);
     }
@@ -285,9 +316,7 @@ function createCalendarPage(config, active) {
 }
 
 function setPrintDimensions(page, config) {
-  const isLandscape = config.calendar.orientation === "landscape";
-  const portrait = config.calendar.paper === "letter" ? [8.5, 11] : [210 / 25.4, 297 / 25.4];
-  const [width, height] = isLandscape ? [portrait[1], portrait[0]] : portrait;
+  const [width, height] = paperDimensionsInches(config.calendar);
   page.style.width = `${width}in`;
   page.style.height = `${height}in`;
   page.style.maxWidth = "none";
@@ -303,13 +332,21 @@ function renderPreview(config) {
   currentPageIndex = Math.max(0, currentPageIndex);
   const active = model.months[currentPageIndex];
   const page = createCalendarPage(config, active);
+  const [pageWidth, pageHeight] = setPrintDimensions(page, config);
+  const pageFrame = el("div", {
+    class: "page-frame",
+    dataset: { pageWidthPx: pageWidth * 96, pageHeightPx: pageHeight * 96 },
+  }, [page]);
 
   const navItems = model.months.map((m, index) => {
     const label = `${MONTH_NAMES[m.month - 1]} ${m.year}`;
     return el("button", { type: "button", class: "month-tab", "data-page": index, "aria-current": index === currentPageIndex ? "page" : "false", text: label });
   });
   els.pageNav.replaceChildren(...navItems);
-  els.pages.replaceChildren(page);
+  els.pages.replaceChildren(pageFrame);
+  updatePreviewFrames();
+  if (previewResizeObserver) previewResizeObserver.observe(els.pages);
+  else window.addEventListener("resize", updatePreviewFrames);
 
   const printPages = model.months.map((month) => {
     const printPage = createCalendarPage(config, month);
