@@ -22,7 +22,6 @@ const els = {
   download: document.getElementById("download-config"),
   status: document.getElementById("config-status"),
   errors: document.getElementById("config-errors"),
-  summary: document.getElementById("settings-summary"),
   pages: document.getElementById("pages"),
   form: document.getElementById("calendar-form"),
   taskList: document.getElementById("task-list"),
@@ -56,21 +55,6 @@ function showErrors(errors) {
       el("li", {}, path ? [el("code", { text: path }), `: ${message}`] : [message]),
     ),
   );
-}
-
-function renderSummary(config) {
-  const c = config.calendar;
-  const months = c.months.map((m) => `${MONTH_NAMES[m.month - 1]} ${m.year}`).join(", ");
-  const rows = [
-    ["Months", months],
-    ["Week starts on", WEEKDAY_NAMES[c.weekStartsOn]],
-    ["Paper", `${c.paper === "a4" ? "A4" : "US Letter"}, ${c.orientation}`],
-    ["Color mode", c.colorMode],
-    ["Title", c.showTitle ? c.title : "(hidden)"],
-    ["Decoration", c.decoration],
-    ["Tasks", String(config.tasks.filter((t) => t.enabled).length)],
-  ];
-  els.summary.replaceChildren(...rows.flatMap(([term, value]) => [el("dt", { text: term }), el("dd", { text: value })]));
 }
 
 function field(label, control, hint = "") {
@@ -194,7 +178,6 @@ function applyConfig(config) {
   currentConfig = config;
   els.json.value = serializeConfig(config);
   renderEditor(config);
-  renderSummary(config);
   renderPreview(config);
 }
 
