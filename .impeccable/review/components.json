@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 3,
+  "stage": "components",
+  "id": "components",
+  "title": "Plan and asset review · index.html",
+  "comp": {
+    "path": ".impeccable/mocks/decision/family-kitchen-board.png",
+    "width": 1536,
+    "height": 1024
+  },
+  "specSha256": "2ebc75df81019618b91eca283479c0b4295374caf875b51a441c39cfb4ecf689",
+  "components": [
+    {
+      "id": "brand-logo",
+      "name": "Brand logo",
+      "kind": "control",
+      "role": "plan",
+      "box": {
+        "x": 0.0326,
+        "y": 0.0361,
+        "w": 0.0293,
+        "h": 0.0439
+      },
+      "note": "Confirmed custom calendar and home brand icon rendered from the existing SVG",
+      "medium": "code",
+      "preview": {
+        "kind": "comp-crop"
+      },
+      "codeDrawn": true,
+      "dependencies": []
+    },
+    {
+      "id": "board-ground",
+      "name": "Board ground",
+      "kind": "texture",
+      "role": "asset",
+      "box": {
+        "x": 0.293,
+        "y": 0.0732,
+        "w": 0.0521,
+        "h": 0.0586
+      },
+      "note": "Clean warm enamel board ground used as subtle tile texture",
+      "medium": "raster",
+      "preview": {
+        "kind": "image",
+        "path": "assets/plates/board-ground.png"
+      },
+      "dependencies": []
+    }
+  ],
+  "codeRegions": [
+    {
+      "id": "brand-title",
+      "name": "Brand title",
+      "kind": "text",
+      "box": {
+        "x": 0.0781,
+        "y": 0.041,
+        "w": 0.2734,
+        "h": 0.041
+      },
+      "note": "Household Calendar Builder product name in dark green"
+    },
+    {
+      "id": "task-heading",
+      "name": "Task heading",
+      "kind": "text",
+      "box": {
+        "x": 0.0326,
+        "y": 0.1006,
+        "w": 0.1432,
+        "h": 0.0332
+      },
+      "note": "Tasks and Routines heading above the routine strips"
+    },
+    {
+      "id": "task-strip-1",
+      "name": "Task strip 1",
+      "kind": "control",
+      "box": {
+        "x": 0.0313,
+        "y": 0.1367,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "note": "Brush teeth routine strip with its recurrence anchor and icon"
+    },
+    {
+      "id": "task-strip-2",
+      "name": "Task strip 2",
+      "kind": "control",
+      "box": {
+        "x": 0.0313,
+        "y": 0.2051,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "note": "Dental treat routine strip with its recurrence anchor and icon"
+    },
+    {
+      "id": "task-strip-3",
+      "name": "Task strip 3",
+      "kind": "control",
+      "box": {
+        "x": 0.0313,
+        "y": 0.2754,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "note": "Chew routine strip with its recurrence anchor and icon"
+    },
+    {
+      "id": "task-strip-4",
+      "name": "Task strip 4",
+      "kind": "control",
+      "box": {
+        "x": 0.0313,
+        "y": 0.3447,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "note": "Grooming routine strip scheduled on Saturdays"
+    },
+    {
+      "id": "task-strip-5",
+      "name": "Task strip 5",
+      "kind": "control",
+      "box": {
+        "x": 0.0313,
+        "y": 0.416,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "note": "Nail trim routine strip scheduled for monthly day fifteen"
+    },
+    {
+      "id": "add-task-control",
+      "name": "Add task control",
+      "kind": "control",
+      "box": {
+        "x": 0.0319,
+        "y": 0.502,
+        "w": 0.3216,
+        "h": 0.0586
+      },
+      "note": "Add task action placed below the household routine strips"
+    },
+    {
+      "id": "calendar-settings",
+      "name": "Calendar settings",
+      "kind": "control",
+      "box": {
+        "x": 0.0319,
+        "y": 0.5859,
+        "w": 0.3216,
+        "h": 0.3145
+      },
+      "note": "Month and print settings controls in a compact left rail"
+    },
+    {
+      "id": "calendar-month-title",
+      "name": "Calendar month title",
+      "kind": "text",
+      "box": {
+        "x": 0.5664,
+        "y": 0.0664,
+        "w": 0.2279,
+        "h": 0.0488
+      },
+      "note": "October 2026 month heading centered over calendar grid"
+    },
+    {
+      "id": "calendar-grid",
+      "name": "Calendar grid",
+      "kind": "control",
+      "box": {
+        "x": 0.3815,
+        "y": 0.1387,
+        "w": 0.5964,
+        "h": 0.7637
+      },
+      "note": "Sunday-first October 2026 grid with task symbols on due dates"
+    },
+    {
+      "id": "print-action",
+      "name": "Print action",
+      "kind": "control",
+      "box": {
+        "x": 0.0319,
+        "y": 0.9014,
+        "w": 0.1471,
+        "h": 0.0537
+      },
+      "note": "Print calendar action with outlined treatment"
+    },
+    {
+      "id": "pdf-action",
+      "name": "Pdf action",
+      "kind": "control",
+      "box": {
+        "x": 0.1901,
+        "y": 0.9014,
+        "w": 0.1654,
+        "h": 0.0537
+      },
+      "note": "Download PDF primary export action in terracotta"
+    }
+  ]
+}

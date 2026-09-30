@@ -1,0 +1,136 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-30T14:59:31.596Z",
+  "comp": ".impeccable/mocks/decision/family-kitchen-board.png",
+  "direction": null,
+  "breakpoint": "1536x1024",
+  "artifact": "index.html",
+  "phase": "plates",
+  "phases": {
+    "comps": {
+      "status": "skipped",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [
+        {
+          "at": "2026-09-30T14:59:31.596Z",
+          "text": "started with an approved comp; the comp round happened before this state (surface round or manual)"
+        }
+      ],
+      "gate": null,
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-30T14:59:31.596Z",
+      "closedAt": "2026-09-30T15:13:30.869Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "15 regions, 2 plates, 3 text regions measured",
+        "at": "2026-09-30T15:13:30.869Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "open",
+      "openedAt": "2026-09-30T15:13:30.869Z",
+      "closedAt": null,
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "1/1 plates",
+        "at": "2026-09-30T15:18:38.303Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "sections": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "sessionId": "01a0ef9a-e4e6-7643-9413-44d4ef257278",
+  "plates": {
+    "board-ground": {
+      "id": "board-ground",
+      "file": "assets/plates/board-ground.png",
+      "status": "ok",
+      "assetHash": "f3429d555aa0f6b66e9b600ffb123e604bc3edf9ad7eab1f4627e63e386db442",
+      "regionHash": "fd67782493f55d7a4665589ac86e1bd221bce6120dba2dff9f085c1436315b31",
+      "referenceHash": "ea5231826fd3796e199c1e2e3bca72a748207575c0d1d138f524522a7df3989f",
+      "reference": {
+        "policy": "plate-reference-v2",
+        "excludedPixels": 720,
+        "totalPixels": 4800,
+        "remainingPixels": 4080,
+        "excludedFraction": 0.15,
+        "fullyExcluded": false,
+        "regions": [
+          {
+            "id": "brand-title",
+            "kind": "text",
+            "cropPx": {
+              "x": 0,
+              "y": 0,
+              "w": 80,
+              "h": 9
+            },
+            "pixels": 720
+          }
+        ],
+        "ignoredContainers": []
+      },
+      "compHash": "e8c2a85a36b1c164b6da477e29a85cc5f4501286f891981b0905fca08bb93f42",
+      "size": "160x120",
+      "score": 0.994
+    }
+  }
+}

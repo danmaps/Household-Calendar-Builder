@@ -163,10 +163,26 @@ function recurrenceControl(task, index) {
   return wrap;
 }
 
+function recurrenceSummary(recurrence) {
+  if (recurrence.type === "interval") return `Every ${recurrence.days} day${recurrence.days === 1 ? "" : "s"} · from ${recurrence.firstDue}`;
+  if (recurrence.type === "weekdays") return recurrence.weekdays.map((day) => SHORT_WEEKDAYS[day]).join(", ") || "No weekdays selected";
+  if (recurrence.type === "monthDates") return `Day${recurrence.dates.length === 1 ? "" : "s"} ${recurrence.dates.join(", ")} each month`;
+  return recurrence.dates.length ? `Once · ${recurrence.dates.join(", ")}` : "No dates selected";
+}
+
 function renderTasks(config) {
+  const openTasks = new Set([...els.taskList.querySelectorAll(".task-card[open]")].map((card) => card.dataset.taskId));
   els.taskList.replaceChildren(...config.tasks.map((task, index) => {
-    const card = el("fieldset", { class: "task-card" });
-    const legend = el("legend", {}, [task.name || `Task ${index + 1}`]);
+    const card = el("details", { class: "task-card", dataset: { taskId: task.id }, open: openTasks.has(task.id) });
+    const symbol = el("img", { class: "task-strip-symbol", src: `assets/icons/${task.icon}.svg`, alt: "", "aria-hidden": "true" });
+    const summary = el("summary", { class: "task-strip" }, [
+      symbol,
+      el("span", { class: "task-strip-copy" }, [
+        el("strong", { class: "task-strip-name", text: task.name || `Task ${index + 1}` }),
+        el("span", { class: "task-strip-recurrence", text: recurrenceSummary(task.recurrence) }),
+      ]),
+      el("span", { class: "task-strip-chevron", "aria-hidden": "true" }),
+    ]);
     const name = input("text", task.name, { maxlength: LIMITS.maxNameLength, required: "", "data-error-path": `tasks[${index}].name`, "data-task": index, "data-field": "name" });
     const recurrence = select(task.recurrence.type, [["interval", "Every N days"], ["weekdays", "Selected weekdays"], ["monthDates", "Dates each month"], ["once", "One-time dates"]], { "data-task": index, "data-field": "recurrenceType" });
     const icon = el("select", { "data-task": index, "data-field": "icon", "data-error-path": `tasks[${index}].icon`, "aria-label": `Symbol for ${task.name}` });
@@ -185,7 +201,7 @@ function renderTasks(config) {
       el("button", { type: "button", "data-action": "down", "data-task": index, disabled: index === config.tasks.length - 1, text: "Move down" }),
       el("button", { type: "button", "data-action": "remove", "data-task": index, text: "Remove" }),
     ]);
-    card.append(legend,
+    card.append(summary,
       el("div", { class: "task-fields" }, [field("Task name", name), field("Repeat", recurrence), iconChoice, field("Assigned to", assignee), field("Custom color", customColor), field("Task color", color), el("label", { class: "check" }, [enabled, "Enabled"])]),
       recurrenceControl(task, index), actions);
     return card;
@@ -434,6 +450,8 @@ function addTask() {
   const firstDate = `${String(first.year).padStart(4, "0")}-${String(first.month).padStart(2, "0")}-01`;
   currentConfig.tasks.push({ id, name: "New task", recurrence: { type: "interval", days: 1, firstDue: firstDate }, icon: ICON_IDS[0], color: null, assignee: null, enabled: true });
   applyConfig(normalizeConfig(currentConfig));
+  const addedTask = els.taskList.querySelector(`[data-task-id="${CSS.escape(id)}"]`);
+  if (addedTask) addedTask.open = true;
   setStatus("Task added. Edit its name and schedule.");
 }
 

@@ -1,0 +1,17 @@
+{"regions":[
+{"id":"board-ground","kind":"texture","pixelBox":{"x":450,"y":75,"w":80,"h":60},"note":"Clean warm enamel board ground used as subtle tile texture","codeDrawn":false},
+{"id":"brand-logo","kind":"control","pixelBox":{"x":50,"y":37,"w":45,"h":45},"note":"Confirmed custom calendar and home brand icon rendered from the existing SVG","codeDrawn":true},
+{"id":"brand-title","kind":"text","pixelBox":{"x":120,"y":42,"w":420,"h":42},"note":"Household Calendar Builder product name in dark green"},
+{"id":"task-heading","kind":"text","pixelBox":{"x":50,"y":103,"w":220,"h":34},"note":"Tasks and Routines heading above the routine strips"},
+{"id":"task-strip-1","kind":"control","pixelBox":{"x":48,"y":140,"w":495,"h":64},"note":"Brush teeth routine strip with its recurrence anchor and icon","container":true,"reviewGroup":"routine-strip"},
+{"id":"task-strip-2","kind":"control","pixelBox":{"x":48,"y":210,"w":495,"h":64},"note":"Dental treat routine strip with its recurrence anchor and icon","container":true,"reviewGroup":"routine-strip"},
+{"id":"task-strip-3","kind":"control","pixelBox":{"x":48,"y":282,"w":495,"h":64},"note":"Chew routine strip with its recurrence anchor and icon","container":true,"reviewGroup":"routine-strip"},
+{"id":"task-strip-4","kind":"control","pixelBox":{"x":48,"y":353,"w":495,"h":64},"note":"Grooming routine strip scheduled on Saturdays","container":true,"reviewGroup":"routine-strip"},
+{"id":"task-strip-5","kind":"control","pixelBox":{"x":48,"y":426,"w":495,"h":64},"note":"Nail trim routine strip scheduled for monthly day fifteen","container":true,"reviewGroup":"routine-strip"},
+{"id":"add-task-control","kind":"control","pixelBox":{"x":49,"y":514,"w":494,"h":60},"note":"Add task action placed below the household routine strips"},
+{"id":"calendar-settings","kind":"control","pixelBox":{"x":49,"y":600,"w":494,"h":322},"note":"Month and print settings controls in a compact left rail","container":true},
+{"id":"calendar-month-title","kind":"text","pixelBox":{"x":870,"y":68,"w":350,"h":50},"note":"October 2026 month heading centered over calendar grid"},
+{"id":"calendar-grid","kind":"control","pixelBox":{"x":586,"y":142,"w":916,"h":782},"note":"Sunday-first October 2026 grid with task symbols on due dates","container":true},
+{"id":"print-action","kind":"control","pixelBox":{"x":49,"y":923,"w":226,"h":55},"note":"Print calendar action with outlined treatment"},
+{"id":"pdf-action","kind":"control","pixelBox":{"x":292,"y":923,"w":254,"h":55},"note":"Download PDF primary export action in terracotta"}
+]}

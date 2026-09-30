@@ -10,24 +10,28 @@
   </head>
   <body>
     <header class="app-header">
-      <h1>Household Calendar Builder</h1>
-      <nav aria-label="Sections">
-        <a href="#editor">Editor</a>
-        <a href="#preview">Preview</a>
-      </nav>
+      <a class="brand" href="#top" aria-label="Household Calendar Builder home">
+        <img src="assets/brand/household-calendar-builder.svg" alt="" />
+        <h1>Household Calendar Builder</h1>
+      </a>
+      <div class="header-actions" aria-label="Calendar output">
+        <button type="button" id="print-calendar" class="button-print">Print calendar</button>
+        <button type="button" id="download-pdf" class="button-pdf">Download PDF</button>
+      </div>
     </header>
 
-    <main class="app-main">
+    <main class="app-main" id="top">
       <section id="editor" class="pane editor" aria-labelledby="editor-heading">
-        <h2 id="editor-heading">Editor</h2>
+        <h2 id="editor-heading">Tasks &amp; routines</h2>
 
         <form id="calendar-form" novalidate>
-          <h3>Calendar settings</h3>
-          <p class="hint">Choose one month or a consecutive range. Each month becomes one calendar page.</p>
-          <div id="month-range" class="settings-grid"></div>
-          <h3>Household tasks</h3>
           <div id="task-list" class="task-list"></div>
-          <button type="button" id="add-task">Add task</button>
+          <button type="button" id="add-task" class="add-task">Add task</button>
+          <section class="calendar-settings" aria-labelledby="settings-heading">
+            <h3 id="settings-heading">Calendar settings</h3>
+            <p class="hint">Choose one month or a consecutive range. Each month becomes one calendar page.</p>
+            <div id="month-range" class="settings-grid"></div>
+          </section>
         </form>
 
         <details>
@@ -45,13 +49,9 @@
       </section>
 
       <section id="preview" class="pane preview" aria-labelledby="preview-heading">
-        <h2 id="preview-heading">Print preview</h2>
+        <h2 id="preview-heading" class="visually-hidden">Print preview</h2>
         <nav id="preview-navigation" class="preview-navigation" aria-label="Calendar month pages"></nav>
         <p id="preview-warning" class="preview-warning" role="status" hidden></p>
-        <div class="actions preview-actions">
-          <button type="button" id="print-calendar">Print calendar</button>
-          <button type="button" id="download-pdf">Download PDF</button>
-        </div>
         <div id="pages" class="pages"></div>
         <div id="print-pages" class="print-pages" aria-hidden="true"></div>
       </section>
