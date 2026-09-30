@@ -8,6 +8,7 @@ const MONTH_NAMES = [
   "July", "August", "September", "October", "November", "December",
 ];
 const WEEKDAY_NAMES = ["Sunday", "Monday"];
+const SUNDAY_WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const FALLBACK_CONFIG = {
   schemaVersion: 1,
@@ -23,12 +24,15 @@ const els = {
   status: document.getElementById("config-status"),
   errors: document.getElementById("config-errors"),
   pages: document.getElementById("pages"),
+  pageNav: document.getElementById("preview-navigation"),
+  warning: document.getElementById("preview-warning"),
   form: document.getElementById("calendar-form"),
   taskList: document.getElementById("task-list"),
   months: document.getElementById("month-range"),
 };
 
 let currentConfig = normalizeConfig(FALLBACK_CONFIG);
+let currentPageIndex = 0;
 
 function el(tag, props = {}, children = []) {
   const node = document.createElement(tag);
@@ -190,39 +194,81 @@ function renderEditor(config) {
 function renderPreview(config) {
   const c = config.calendar;
   const model = buildCalendar(config);
-  const pages = model.months.map((m) => {
-    const tasks = config.tasks.filter((t) => t.enabled);
-    const { year, month } = m;
-    const monthLabel = `${MONTH_NAMES[month - 1]} ${year}`;
-    const page = el("article", {
-      class: "page",
-      "aria-label": `Page: ${monthLabel}`,
-      dataset: { paper: c.paper, orientation: c.orientation, colorMode: c.colorMode, decoration: c.decoration },
-    });
-    if (c.showTitle) {
-      page.append(el("h3", { class: "page-title", text: c.title, dataset: { align: c.titleAlign, size: c.titleSize } }));
-    }
-    page.append(
-      el("h4", { class: "page-month", text: monthLabel }),
-      el("div", { class: "grid-placeholder", text: `${monthLabel} calendar grid (week starts on ${WEEKDAY_NAMES[c.weekStartsOn]})` }),
-    );
-    if (c.showKey && tasks.length > 0) {
-      page.append(
-        el(
-          "ul",
-          { class: "task-key", "aria-label": "Task key" },
-          tasks.map((t) => {
-            const swatch = el("span", { class: "swatch", "aria-hidden": "true" });
-            swatch.style.background = c.colorMode === "color" && t.color ? t.color : "transparent";
-            const label = t.assignee ? `${t.name} (${t.assignee})` : t.name;
-            return el("li", {}, [swatch, label, " ", el("span", { class: "icon-id", text: `[${t.icon}]` })]);
-          }),
-        ),
-      );
-    }
-    return page;
+  if (currentPageIndex >= model.months.length) currentPageIndex = model.months.length - 1;
+  currentPageIndex = Math.max(0, currentPageIndex);
+  const active = model.months[currentPageIndex];
+  const monthLabel = `${MONTH_NAMES[active.month - 1]} ${active.year}`;
+  const weekdays = Array.from({ length: 7 }, (_, i) => SUNDAY_WEEKDAYS[(i + c.weekStartsOn) % 7]);
+  const page = el("article", {
+    class: "page",
+    "aria-label": `Calendar page: ${monthLabel}`,
+    dataset: { paper: c.paper, orientation: c.orientation, colorMode: c.colorMode, decoration: c.decoration },
   });
-  els.pages.replaceChildren(...pages);
+  if (c.showTitle) {
+    page.append(el("h3", { class: "page-title", text: c.title, dataset: { align: c.titleAlign, size: c.titleSize } }));
+  }
+  page.append(el("h4", { class: "page-month", text: monthLabel }));
+
+  const table = el("table", { class: "calendar-grid", "aria-label": `${monthLabel} household task calendar`, style: `--week-count: ${active.weekRows}` });
+  const thead = el("thead", {}, [el("tr", {}, weekdays.map((name) => el("th", { scope: "col", text: name })))]);
+  const tbody = el("tbody");
+  for (const week of active.weeks) {
+    const row = el("tr");
+    for (const cell of week) {
+      const td = el("td", { class: cell.date ? "day-cell" : "day-cell is-empty" });
+      if (cell.date) {
+        const date = new Date(`${cell.date}T00:00:00Z`);
+        const dateLabel = new Intl.DateTimeFormat("en", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(date);
+        td.append(el("span", { class: "day-number", text: String(cell.day) }));
+        if (cell.tasks.length) {
+          const marks = el("div", { class: "day-tasks", "aria-label": `Tasks for ${dateLabel}` });
+          for (const task of cell.tasks) {
+            const taskLabel = task.assignee ? `${task.name}, assigned to ${task.assignee}` : task.name;
+            const mark = el("div", { class: "task-mark", ...(c.showCheckboxes ? {} : { role: "img", "aria-label": taskLabel }), title: taskLabel });
+            if (c.colorMode === "color" && task.color) mark.style.borderColor = task.color;
+            if (c.showCheckboxes) {
+              const check = el("input", { type: "checkbox", "aria-label": `Mark ${task.name} complete on ${dateLabel}` });
+              mark.append(check);
+            }
+            mark.append(el("img", { src: `assets/icons/${task.icon}.svg`, alt: "", "aria-hidden": "true" }));
+            marks.append(mark);
+          }
+          td.append(marks);
+        }
+      }
+      row.append(td);
+    }
+    tbody.append(row);
+  }
+  table.append(thead, tbody);
+  page.append(table);
+
+  const tasks = config.tasks.filter((task) => task.enabled);
+  if (c.showKey && tasks.length) {
+    page.append(el("ul", { class: "task-key", "aria-label": "Task symbol key" }, tasks.map((task) => {
+      const li = el("li");
+      const image = el("img", { src: `assets/icons/${task.icon}.svg`, alt: "", "aria-hidden": "true" });
+      const label = task.assignee ? `${task.name} (${task.assignee})` : task.name;
+      const swatch = el("span", { class: "swatch", "aria-hidden": "true" });
+      if (c.colorMode === "color" && task.color) swatch.style.backgroundColor = task.color;
+      li.append(image, el("span", { text: label }), swatch);
+      return li;
+    })));
+  }
+
+  const navItems = model.months.map((m, index) => {
+    const label = `${MONTH_NAMES[m.month - 1]} ${m.year}`;
+    return el("button", { type: "button", class: "month-tab", "data-page": index, "aria-current": index === currentPageIndex ? "page" : "false", text: label });
+  });
+  els.pageNav.replaceChildren(...navItems);
+  els.pages.replaceChildren(page);
+
+  const maxTasksPerDay = Math.max(0, ...active.weeks.flat().map((cell) => cell.tasks.length));
+  const warnings = [];
+  if (maxTasksPerDay > 3) warnings.push(`Some dates show ${maxTasksPerDay} tasks and may feel crowded.`);
+  if (c.showKey && tasks.length > 12) warnings.push(`The task key has ${tasks.length} items and may be crowded.`);
+  els.warning.textContent = warnings.join(" ");
+  els.warning.hidden = warnings.length === 0;
 }
 
 function applyConfig(config) {
@@ -230,6 +276,13 @@ function applyConfig(config) {
   els.json.value = serializeConfig(config);
   renderEditor(config);
   renderPreview(config);
+}
+
+function handlePageNavigation(event) {
+  const button = event.target.closest("button[data-page]");
+  if (!button) return;
+  currentPageIndex = Number(button.dataset.page);
+  renderPreview(currentConfig);
 }
 
 function updateCalendarValues() {
@@ -382,6 +435,7 @@ els.form.addEventListener("change", handleFormChange);
 els.taskList.addEventListener("click", handleTaskAction);
 els.taskList.addEventListener("input", handleIconSearch);
 document.getElementById("add-task").addEventListener("click", addTask);
+els.pageNav.addEventListener("click", handlePageNavigation);
 
 applyConfig(currentConfig);
 loadExample();
