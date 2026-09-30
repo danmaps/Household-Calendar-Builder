@@ -1,4 +1,7 @@
-# Household Calendar Builder
+<div align="center">
+  <img src="assets/brand/household-calendar-builder.svg" alt="Household Calendar Builder logo: a calendar page with a small home and a checked task" width="112">
+  <h1>Household Calendar Builder</h1>
+</div>
 
 A family utility for configuring recurring household tasks, choosing symbols and colors, and previewing a clean printable calendar before exporting it.
 
