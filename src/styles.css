@@ -118,12 +118,19 @@ textarea {
 .field-error { color: var(--error); font-size: 0.78rem; font-weight: 500; }
 .field input,
 .field select { width: 100%; min-height: 2.25rem; font: inherit; }
+.field input[type="checkbox"] { width: auto; min-height: auto; }
+.field input[type="color"] { padding: 0.15rem; }
 .field small { color: var(--muted); font-size: 0.78rem; }
 
 .task-list { display: grid; gap: 0.75rem; margin-bottom: 0.65rem; }
 .task-card { min-width: 0; margin: 0; padding: 0.75rem; border: 1px solid var(--line); border-radius: 0.35rem; }
 .task-card legend { padding: 0 0.25rem; font-weight: 650; }
 .task-card .recurrence-fields { margin-top: 0.65rem; }
+.icon-choice { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.55rem; align-items: center; min-width: 0; }
+.icon-sample { width: 2rem; height: 2rem; object-fit: contain; color: var(--ink); }
+.icon-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; min-width: 0; }
+.weekday-group { min-width: 0; margin: 0; padding: 0.35rem 0.5rem 0.5rem; border: 1px solid var(--line); border-radius: 0.25rem; }
+.weekday-group legend { font-size: 0.9rem; font-weight: 600; }
 .task-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.65rem; }
 .checks { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; }
 .check { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.9rem; }
@@ -227,7 +234,7 @@ a:focus-visible {
 }
 
 @media (max-width: 34rem) {
-  .settings-grid, .task-fields, .recurrence-fields { grid-template-columns: 1fr; }
+  .settings-grid, .task-fields, .recurrence-fields, .icon-fields { grid-template-columns: 1fr; }
 }
 
 .task-key {

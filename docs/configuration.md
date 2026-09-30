@@ -73,3 +73,9 @@ All dates are date-only strings (`YYYY-MM-DD`) and must be real calendar dates.
 - `buildCalendar(config)` validates and normalizes the configuration, then returns each selected month with date cells containing `{ date, day, tasks }` and a flat `occurrences` list of `{ date, task }`. Disabled tasks are omitted.
 
 All calculations use UTC date-only values and do not depend on the machine's local timezone or daylight-saving rules. The October 2026 fixture is also exercised through this engine by `npm test`.
+
+## Editor and symbols
+
+The form exposes calendar month ranges, paper and orientation, week start, color mode, title options, decoration, key and checkbox visibility, and the task fields described above. Tasks can be added, removed, enabled, and reordered. The advanced JSON panel remains available for importing or editing the same normalized configuration.
+
+The symbol picker is built from the IDs in `src/icon-ids.js`, with searchable category groups and local SVG artwork under `assets/icons/`. The picker is a native labeled `<select>` so it supports standard keyboard interaction; the neighboring search field filters its options, and each symbol has a readable name. The bundled artwork source and licensing terms are listed in [`icon-attribution.md`](icon-attribution.md) and `assets/icons/manifest.json`.
