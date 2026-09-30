@@ -7,8 +7,8 @@ const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-const WEEKDAY_NAMES = ["Sunday", "Monday"];
 const SUNDAY_WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const SHORT_WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const FALLBACK_CONFIG = {
   schemaVersion: 1,
@@ -24,6 +24,11 @@ const els = {
   status: document.getElementById("config-status"),
   errors: document.getElementById("config-errors"),
   pages: document.getElementById("pages"),
+  printPages: document.getElementById("print-pages"),
+  pdfStage: document.getElementById("pdf-stage"),
+  printSettings: document.getElementById("print-page-settings"),
+  print: document.getElementById("print-calendar"),
+  downloadPdf: document.getElementById("download-pdf"),
   pageNav: document.getElementById("preview-navigation"),
   warning: document.getElementById("preview-warning"),
   form: document.getElementById("calendar-form"),
@@ -124,6 +129,7 @@ function renderCalendarControls(config) {
     field("Week starts", select(c.weekStartsOn, [[0, "Sunday"], [1, "Monday"]], { "data-calendar": "weekStartsOn" })),
     field("Paper", select(c.paper, [["letter", "US Letter"], ["a4", "A4"]], { "data-calendar": "paper" })),
     field("Orientation", select(c.orientation, [["landscape", "Landscape"], ["portrait", "Portrait"]], { "data-calendar": "orientation" })),
+    field("Page margins", select(c.marginInches, [[0.25, "Narrow · ¼ inch"], [0.5, "Standard · ½ inch"], [0.75, "Wide · ¾ inch"], [1, "Extra wide · 1 inch"]], { "data-calendar": "marginInches" })),
     field("Color", select(c.colorMode, [["monochrome", "Monochrome"], ["color", "Color"]], { "data-calendar": "colorMode" })),
     field("Show title", input("checkbox", "", { checked: c.showTitle, "data-calendar": "showTitle" })),
     field("Calendar title", input("text", c.title, { maxlength: LIMITS.maxTitleLength, "data-calendar": "title" })),
@@ -191,12 +197,8 @@ function renderEditor(config) {
   renderTasks(config);
 }
 
-function renderPreview(config) {
+function createCalendarPage(config, active) {
   const c = config.calendar;
-  const model = buildCalendar(config);
-  if (currentPageIndex >= model.months.length) currentPageIndex = model.months.length - 1;
-  currentPageIndex = Math.max(0, currentPageIndex);
-  const active = model.months[currentPageIndex];
   const monthLabel = `${MONTH_NAMES[active.month - 1]} ${active.year}`;
   const weekdays = Array.from({ length: 7 }, (_, i) => SUNDAY_WEEKDAYS[(i + c.weekStartsOn) % 7]);
   const page = el("article", {
@@ -204,13 +206,20 @@ function renderPreview(config) {
     "aria-label": `Calendar page: ${monthLabel}`,
     dataset: { paper: c.paper, orientation: c.orientation, colorMode: c.colorMode, decoration: c.decoration },
   });
+  page.style.padding = `${c.marginInches}in`;
   if (c.showTitle) {
     page.append(el("h3", { class: "page-title", text: c.title, dataset: { align: c.titleAlign, size: c.titleSize } }));
   }
   page.append(el("h4", { class: "page-month", text: monthLabel }));
 
   const table = el("table", { class: "calendar-grid", "aria-label": `${monthLabel} household task calendar`, style: `--week-count: ${active.weekRows}` });
-  const thead = el("thead", {}, [el("tr", {}, weekdays.map((name) => el("th", { scope: "col", text: name })))]);
+  const thead = el("thead", {}, [el("tr", {}, weekdays.map((name) => {
+    const dayIndex = SUNDAY_WEEKDAYS.indexOf(name);
+    return el("th", { scope: "col", "aria-label": name }, [
+      el("span", { class: "weekday-long", text: name }),
+      el("span", { class: "weekday-short", text: SHORT_WEEKDAYS[dayIndex] }),
+    ]);
+  }))]);
   const tbody = el("tbody");
   for (const week of active.weeks) {
     const row = el("tr");
@@ -256,6 +265,29 @@ function renderPreview(config) {
     })));
   }
 
+  return page;
+}
+
+function setPrintDimensions(page, config) {
+  const isLandscape = config.calendar.orientation === "landscape";
+  const portrait = config.calendar.paper === "letter" ? [8.5, 11] : [210 / 25.4, 297 / 25.4];
+  const [width, height] = isLandscape ? [portrait[1], portrait[0]] : portrait;
+  page.style.width = `${width}in`;
+  page.style.height = `${height}in`;
+  page.style.maxWidth = "none";
+  page.style.aspectRatio = "auto";
+  return [width, height];
+}
+
+function renderPreview(config) {
+  const c = config.calendar;
+  const tasks = config.tasks.filter((task) => task.enabled);
+  const model = buildCalendar(config);
+  if (currentPageIndex >= model.months.length) currentPageIndex = model.months.length - 1;
+  currentPageIndex = Math.max(0, currentPageIndex);
+  const active = model.months[currentPageIndex];
+  const page = createCalendarPage(config, active);
+
   const navItems = model.months.map((m, index) => {
     const label = `${MONTH_NAMES[m.month - 1]} ${m.year}`;
     return el("button", { type: "button", class: "month-tab", "data-page": index, "aria-current": index === currentPageIndex ? "page" : "false", text: label });
@@ -263,10 +295,21 @@ function renderPreview(config) {
   els.pageNav.replaceChildren(...navItems);
   els.pages.replaceChildren(page);
 
+  const printPages = model.months.map((month) => {
+    const printPage = createCalendarPage(config, month);
+    printPage.classList.add("print-page");
+    setPrintDimensions(printPage, config);
+    return printPage;
+  });
+  els.printPages.replaceChildren(...printPages);
+  const paperName = config.calendar.paper === "letter" ? "letter" : "A4";
+  els.printSettings.textContent = `@page { size: ${paperName} ${config.calendar.orientation}; margin: 0; }`;
+
   const maxTasksPerDay = Math.max(0, ...active.weeks.flat().map((cell) => cell.tasks.length));
   const warnings = [];
   if (maxTasksPerDay > 3) warnings.push(`Some dates show ${maxTasksPerDay} tasks and may feel crowded.`);
   if (c.showKey && tasks.length > 12) warnings.push(`The task key has ${tasks.length} items and may be crowded.`);
+  if (tasks.some((task) => task.name.length > 24 || (task.assignee?.length ?? 0) > 16)) warnings.push("A long task or assignment label may wrap; shorten its wording or hide the task key.");
   els.warning.textContent = warnings.join(" ");
   els.warning.hidden = warnings.length === 0;
 }
@@ -307,9 +350,9 @@ function applyFormChange(target) {
   const taskIndex = Number(target.dataset.task);
   if (target.dataset.calendar) {
     updateCalendarValues();
-    for (const fieldName of ["weekStartsOn", "paper", "orientation", "colorMode"]) {
+    for (const fieldName of ["weekStartsOn", "paper", "orientation", "marginInches", "colorMode"]) {
       const controlValue = els.form.querySelector(`[data-calendar="${fieldName}"]`).value;
-      currentConfig.calendar[fieldName] = fieldName === "weekStartsOn" ? Number(controlValue) : controlValue;
+      currentConfig.calendar[fieldName] = ["weekStartsOn", "marginInches"].includes(fieldName) ? Number(controlValue) : controlValue;
     }
     for (const key of ["showTitle", "title", "titleAlign", "titleSize", "decoration", "showKey", "showCheckboxes"]) {
       const control = els.form.querySelector(`[data-calendar="${key}"]`);
@@ -436,6 +479,20 @@ els.taskList.addEventListener("click", handleTaskAction);
 els.taskList.addEventListener("input", handleIconSearch);
 document.getElementById("add-task").addEventListener("click", addTask);
 els.pageNav.addEventListener("click", handlePageNavigation);
+els.print.addEventListener("click", () => window.print());
+els.downloadPdf.addEventListener("click", async () => {
+  els.downloadPdf.disabled = true;
+  setStatus("Preparing the PDF…");
+  try {
+    const { downloadCalendarPdf } = await import("./pdf-export.js");
+    await downloadCalendarPdf(currentConfig, createCalendarPage, els.pdfStage);
+    setStatus("PDF downloaded.");
+  } catch (err) {
+    setStatus(`Could not create the PDF (${err.message}). Try browser printing instead.`, true);
+  } finally {
+    els.downloadPdf.disabled = false;
+  }
+});
 
 applyConfig(currentConfig);
 loadExample();

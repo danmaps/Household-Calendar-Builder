@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Household Calendar Builder</title>
     <link rel="stylesheet" href="src/styles.css" />
+    <style id="print-page-settings"></style>
     <script type="module" src="src/app.js"></script>
   </head>
   <body>
@@ -47,8 +48,14 @@
         <h2 id="preview-heading">Print preview</h2>
         <nav id="preview-navigation" class="preview-navigation" aria-label="Calendar month pages"></nav>
         <p id="preview-warning" class="preview-warning" role="status" hidden></p>
+        <div class="actions preview-actions">
+          <button type="button" id="print-calendar">Print calendar</button>
+          <button type="button" id="download-pdf">Download PDF</button>
+        </div>
         <div id="pages" class="pages"></div>
+        <div id="print-pages" class="print-pages" aria-hidden="true"></div>
       </section>
     </main>
+    <div id="pdf-stage" class="pdf-stage" aria-hidden="true"></div>
   </body>
 </html>
