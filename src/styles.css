@@ -99,6 +99,38 @@ textarea {
   font-size: 0.8rem;
 }
 
+.settings-grid,
+.task-fields,
+.recurrence-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.field-label { font-weight: 600; }
+.field-error { color: var(--error); font-size: 0.78rem; font-weight: 500; }
+.field input,
+.field select { width: 100%; min-height: 2.25rem; font: inherit; }
+.field small { color: var(--muted); font-size: 0.78rem; }
+
+.task-list { display: grid; gap: 0.75rem; margin-bottom: 0.65rem; }
+.task-card { min-width: 0; margin: 0; padding: 0.75rem; border: 1px solid var(--line); border-radius: 0.35rem; }
+.task-card legend { padding: 0 0.25rem; font-weight: 650; }
+.task-card .recurrence-fields { margin-top: 0.65rem; }
+.task-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.65rem; }
+.checks { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; }
+.check { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.9rem; }
+.check input { width: 1rem; height: 1rem; }
+details { margin-top: 1rem; }
+summary { cursor: pointer; font-weight: 600; }
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -192,6 +224,10 @@ a:focus-visible {
   font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
+}
+
+@media (max-width: 34rem) {
+  .settings-grid, .task-fields, .recurrence-fields { grid-template-columns: 1fr; }
 }
 
 .task-key {
