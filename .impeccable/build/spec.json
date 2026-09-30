@@ -1,0 +1,933 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-09-30T15:18:38.200Z",
+  "comp": ".impeccable/mocks/decision/family-kitchen-board.png",
+  "warnings": [
+    "region brand-logo: \"codeDrawn\": true set in the regions file (the painted-material refusal is overridden: code draws this region)",
+    "region task-strip-1: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region task-strip-2: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region task-strip-3: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region task-strip-4: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region task-strip-5: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region calendar-settings: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region calendar-grid: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)"
+  ],
+  "uncoveredInkCells": [
+    "G0",
+    "H0"
+  ],
+  "compSize": {
+    "width": 1536,
+    "height": 1024
+  },
+  "aspect": 1.5,
+  "orientation": "landscape",
+  "palette": [
+    {
+      "hex": "#efece7",
+      "coverage": 0.9372
+    },
+    {
+      "hex": "#c2c1b8",
+      "coverage": 0.0294
+    },
+    {
+      "hex": "#0c1e26",
+      "coverage": 0.0172
+    },
+    {
+      "hex": "#9e9f9e",
+      "coverage": 0.0088
+    },
+    {
+      "hex": "#ba6848",
+      "coverage": 0.0073
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0118,
+      "strength": 0.2859
+    },
+    {
+      "y": 0.0471,
+      "strength": 0.4039
+    },
+    {
+      "y": 0.0706,
+      "strength": 0.2909
+    },
+    {
+      "y": 0.1176,
+      "strength": 0.3442
+    },
+    {
+      "y": 0.1529,
+      "strength": 0.3118
+    },
+    {
+      "y": 0.1882,
+      "strength": 0.3126
+    },
+    {
+      "y": 0.5176,
+      "strength": 0.2387
+    },
+    {
+      "y": 0.6118,
+      "strength": 0.2096
+    },
+    {
+      "y": 0.6471,
+      "strength": 0.2196
+    },
+    {
+      "y": 0.8941,
+      "strength": 0.2042
+    },
+    {
+      "y": 0.9882,
+      "strength": 0.4048
+    }
+  ],
+  "regions": [
+    {
+      "id": "board-ground",
+      "kind": "texture",
+      "note": "Clean warm enamel board ground used as subtle tile texture",
+      "grid": null,
+      "box": {
+        "x": 0.293,
+        "y": 0.0732,
+        "w": 0.0521,
+        "h": 0.0586
+      },
+      "px": {
+        "x": 450,
+        "y": 75,
+        "w": 80,
+        "h": 60
+      },
+      "aspect": 1.3333,
+      "palette": [
+        {
+          "hex": "#e8e8e8",
+          "coverage": 1
+        }
+      ],
+      "detail": {
+        "energy": 0.2282
+      },
+      "medium": "raster",
+      "plate": "assets/plates/board-ground.png",
+      "text": null
+    },
+    {
+      "id": "brand-logo",
+      "kind": "control",
+      "note": "Confirmed custom calendar and home brand icon rendered from the existing SVG",
+      "grid": null,
+      "codeDrawn": true,
+      "box": {
+        "x": 0.0326,
+        "y": 0.0361,
+        "w": 0.0293,
+        "h": 0.0439
+      },
+      "px": {
+        "x": 50,
+        "y": 37,
+        "w": 45,
+        "h": 45
+      },
+      "aspect": 1,
+      "palette": [
+        {
+          "hex": "#e9e6e5",
+          "coverage": 0.4622
+        },
+        {
+          "hex": "#082823",
+          "coverage": 0.4489
+        },
+        {
+          "hex": "#a1a7a2",
+          "coverage": 0.0489
+        },
+        {
+          "hex": "#667368",
+          "coverage": 0.0311
+        },
+        {
+          "hex": "#405048",
+          "coverage": 0.0089
+        }
+      ],
+      "detail": {
+        "energy": 8.5609
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "brand-title",
+      "kind": "text",
+      "note": "Household Calendar Builder product name in dark green",
+      "grid": null,
+      "box": {
+        "x": 0.0781,
+        "y": 0.041,
+        "w": 0.2734,
+        "h": 0.041
+      },
+      "px": {
+        "x": 120,
+        "y": 42,
+        "w": 420,
+        "h": 42
+      },
+      "aspect": 10,
+      "palette": [
+        {
+          "hex": "#eceae8",
+          "coverage": 0.7032
+        },
+        {
+          "hex": "#0b2320",
+          "coverage": 0.1935
+        },
+        {
+          "hex": "#133b2b",
+          "coverage": 0.0432
+        },
+        {
+          "hex": "#4c615a",
+          "coverage": 0.0327
+        },
+        {
+          "hex": "#86948b",
+          "coverage": 0.0274
+        }
+      ],
+      "detail": {
+        "energy": 90.2607
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 24,
+          "capHeightPx": 25.2,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.635,
+          "advTall": 0.6747,
+          "advX": 0.635,
+          "gap": 0.0794,
+          "xRatio": 0.7285,
+          "stemW": 0.2015,
+          "contrast": 1.2083,
+          "serif": 0.9442,
+          "densTall": 0.5981,
+          "densX": 0.6405,
+          "weight": 0.5981
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "task-heading",
+      "kind": "text",
+      "note": "Tasks and Routines heading above the routine strips",
+      "grid": null,
+      "box": {
+        "x": 0.0326,
+        "y": 0.1006,
+        "w": 0.1432,
+        "h": 0.0332
+      },
+      "px": {
+        "x": 50,
+        "y": 103,
+        "w": 220,
+        "h": 34
+      },
+      "aspect": 6.4706,
+      "palette": [
+        {
+          "hex": "#ebeae8",
+          "coverage": 0.8157
+        },
+        {
+          "hex": "#0c201f",
+          "coverage": 0.0829
+        },
+        {
+          "hex": "#a2afa6",
+          "coverage": 0.0403
+        },
+        {
+          "hex": "#0a2c1c",
+          "coverage": 0.0311
+        },
+        {
+          "hex": "#6c7c76",
+          "coverage": 0.03
+        }
+      ],
+      "detail": {
+        "energy": 48.0802
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 14,
+          "capHeightPx": 17.1,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6276,
+          "advTall": 0.613,
+          "advX": 0.6422,
+          "gap": 0.0876,
+          "xRatio": 0.748,
+          "stemW": 0.2097,
+          "contrast": 1.1993,
+          "serif": null,
+          "densTall": 0.5719,
+          "densX": 0.6401,
+          "weight": 0.5719
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "task-strip-1",
+      "kind": "control",
+      "note": "Brush teeth routine strip with its recurrence anchor and icon",
+      "grid": null,
+      "container": true,
+      "reviewGroup": "routine-strip",
+      "box": {
+        "x": 0.0313,
+        "y": 0.1367,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "px": {
+        "x": 48,
+        "y": 140,
+        "w": 495,
+        "h": 64
+      },
+      "aspect": 7.7344,
+      "palette": [
+        {
+          "hex": "#f7f6ed",
+          "coverage": 0.877
+        },
+        {
+          "hex": "#d1cdc8",
+          "coverage": 0.0651
+        },
+        {
+          "hex": "#31634a",
+          "coverage": 0.0242
+        },
+        {
+          "hex": "#192333",
+          "coverage": 0.0216
+        },
+        {
+          "hex": "#3f4957",
+          "coverage": 0.0122
+        }
+      ],
+      "detail": {
+        "energy": 29.332
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "task-strip-2",
+      "kind": "control",
+      "note": "Dental treat routine strip with its recurrence anchor and icon",
+      "grid": null,
+      "container": true,
+      "reviewGroup": "routine-strip",
+      "box": {
+        "x": 0.0313,
+        "y": 0.2051,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "px": {
+        "x": 48,
+        "y": 210,
+        "w": 495,
+        "h": 64
+      },
+      "aspect": 7.7344,
+      "palette": [
+        {
+          "hex": "#f6f4eb",
+          "coverage": 0.9105
+        },
+        {
+          "hex": "#1e2f41",
+          "coverage": 0.0491
+        },
+        {
+          "hex": "#bec3c5",
+          "coverage": 0.0151
+        },
+        {
+          "hex": "#8c9298",
+          "coverage": 0.0137
+        },
+        {
+          "hex": "#4f5664",
+          "coverage": 0.0117
+        }
+      ],
+      "detail": {
+        "energy": 28.2599
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "task-strip-3",
+      "kind": "control",
+      "note": "Chew routine strip with its recurrence anchor and icon",
+      "grid": null,
+      "container": true,
+      "reviewGroup": "routine-strip",
+      "box": {
+        "x": 0.0313,
+        "y": 0.2754,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "px": {
+        "x": 48,
+        "y": 282,
+        "w": 495,
+        "h": 64
+      },
+      "aspect": 7.7344,
+      "palette": [
+        {
+          "hex": "#f6f4ea",
+          "coverage": 0.9244
+        },
+        {
+          "hex": "#121d2f",
+          "coverage": 0.0259
+        },
+        {
+          "hex": "#bf8b39",
+          "coverage": 0.024
+        },
+        {
+          "hex": "#667078",
+          "coverage": 0.0155
+        },
+        {
+          "hex": "#bcc0c2",
+          "coverage": 0.0102
+        }
+      ],
+      "detail": {
+        "energy": 25.3297
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "task-strip-4",
+      "kind": "control",
+      "note": "Grooming routine strip scheduled on Saturdays",
+      "grid": null,
+      "container": true,
+      "reviewGroup": "routine-strip",
+      "box": {
+        "x": 0.0313,
+        "y": 0.3447,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "px": {
+        "x": 48,
+        "y": 353,
+        "w": 495,
+        "h": 64
+      },
+      "aspect": 7.7344,
+      "palette": [
+        {
+          "hex": "#f5f1e9",
+          "coverage": 0.93
+        },
+        {
+          "hex": "#275945",
+          "coverage": 0.0245
+        },
+        {
+          "hex": "#0f1a2c",
+          "coverage": 0.0233
+        },
+        {
+          "hex": "#c9c8c7",
+          "coverage": 0.0112
+        },
+        {
+          "hex": "#93999e",
+          "coverage": 0.011
+        }
+      ],
+      "detail": {
+        "energy": 25.147
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "task-strip-5",
+      "kind": "control",
+      "note": "Nail trim routine strip scheduled for monthly day fifteen",
+      "grid": null,
+      "container": true,
+      "reviewGroup": "routine-strip",
+      "box": {
+        "x": 0.0313,
+        "y": 0.416,
+        "w": 0.3223,
+        "h": 0.0625
+      },
+      "px": {
+        "x": 48,
+        "y": 426,
+        "w": 495,
+        "h": 64
+      },
+      "aspect": 7.7344,
+      "palette": [
+        {
+          "hex": "#f3eee6",
+          "coverage": 0.9217
+        },
+        {
+          "hex": "#182b3f",
+          "coverage": 0.0446
+        },
+        {
+          "hex": "#949b9d",
+          "coverage": 0.0135
+        },
+        {
+          "hex": "#bdc1c2",
+          "coverage": 0.0109
+        },
+        {
+          "hex": "#6a757f",
+          "coverage": 0.0093
+        }
+      ],
+      "detail": {
+        "energy": 27.5607
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "add-task-control",
+      "kind": "control",
+      "note": "Add task action placed below the household routine strips",
+      "grid": null,
+      "box": {
+        "x": 0.0319,
+        "y": 0.502,
+        "w": 0.3216,
+        "h": 0.0586
+      },
+      "px": {
+        "x": 49,
+        "y": 514,
+        "w": 494,
+        "h": 60
+      },
+      "aspect": 8.2333,
+      "palette": [
+        {
+          "hex": "#ece8e8",
+          "coverage": 0.967
+        },
+        {
+          "hex": "#0d2525",
+          "coverage": 0.0107
+        },
+        {
+          "hex": "#153828",
+          "coverage": 0.0104
+        },
+        {
+          "hex": "#aeb5b1",
+          "coverage": 0.007
+        },
+        {
+          "hex": "#3b534e",
+          "coverage": 0.0049
+        }
+      ],
+      "detail": {
+        "energy": 13.5515
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "calendar-settings",
+      "kind": "control",
+      "note": "Month and print settings controls in a compact left rail",
+      "grid": null,
+      "container": true,
+      "box": {
+        "x": 0.0319,
+        "y": 0.5859,
+        "w": 0.3216,
+        "h": 0.3145
+      },
+      "px": {
+        "x": 49,
+        "y": 600,
+        "w": 494,
+        "h": 322
+      },
+      "aspect": 1.5342,
+      "palette": [
+        {
+          "hex": "#f0f0ef",
+          "coverage": 0.9153
+        },
+        {
+          "hex": "#ceccca",
+          "coverage": 0.0587
+        },
+        {
+          "hex": "#434c4f",
+          "coverage": 0.011
+        },
+        {
+          "hex": "#7b8183",
+          "coverage": 0.0081
+        },
+        {
+          "hex": "#212838",
+          "coverage": 0.0068
+        }
+      ],
+      "detail": {
+        "energy": 21.2406
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "calendar-month-title",
+      "kind": "text",
+      "note": "October 2026 month heading centered over calendar grid",
+      "grid": null,
+      "box": {
+        "x": 0.5664,
+        "y": 0.0664,
+        "w": 0.2279,
+        "h": 0.0488
+      },
+      "px": {
+        "x": 870,
+        "y": 68,
+        "w": 350,
+        "h": 50
+      },
+      "aspect": 7,
+      "palette": [
+        {
+          "hex": "#f1ece9",
+          "coverage": 0.6287
+        },
+        {
+          "hex": "#09231f",
+          "coverage": 0.285
+        },
+        {
+          "hex": "#0a3929",
+          "coverage": 0.0307
+        },
+        {
+          "hex": "#687773",
+          "coverage": 0.0286
+        },
+        {
+          "hex": "#334544",
+          "coverage": 0.027
+        }
+      ],
+      "detail": {
+        "energy": 72.1641
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 11,
+          "capHeightPx": 39.6,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6813,
+          "advTall": 0.7065,
+          "advX": 0.6687,
+          "gap": 0.0757,
+          "xRatio": 0.7364,
+          "stemW": 0.2232,
+          "contrast": 1.1998,
+          "serif": 1.9285,
+          "densTall": 0.5712,
+          "densX": 0.5667,
+          "weight": 0.5712
+        },
+        "widthClass": "normal",
+        "weightClass": "bold",
+        "chosen": {
+          "family": "Cairo",
+          "weight": 700,
+          "fontSizePx": 57,
+          "source": "catalog",
+          "estimatedSize": true,
+          "stamp": "b0fef79097b6"
+        }
+      }
+    },
+    {
+      "id": "calendar-grid",
+      "kind": "control",
+      "note": "Sunday-first October 2026 grid with task symbols on due dates",
+      "grid": null,
+      "container": true,
+      "box": {
+        "x": 0.3815,
+        "y": 0.1387,
+        "w": 0.5964,
+        "h": 0.7637
+      },
+      "px": {
+        "x": 586,
+        "y": 142,
+        "w": 916,
+        "h": 782
+      },
+      "aspect": 1.1714,
+      "palette": [
+        {
+          "hex": "#f3eee7",
+          "coverage": 0.946
+        },
+        {
+          "hex": "#b1b2ae",
+          "coverage": 0.0289
+        },
+        {
+          "hex": "#0c1c27",
+          "coverage": 0.0194
+        },
+        {
+          "hex": "#888f88",
+          "coverage": 0.0043
+        },
+        {
+          "hex": "#081838",
+          "coverage": 0.0014
+        }
+      ],
+      "detail": {
+        "energy": 19.7449
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "print-action",
+      "kind": "control",
+      "note": "Print calendar action with outlined treatment",
+      "grid": null,
+      "box": {
+        "x": 0.0319,
+        "y": 0.9014,
+        "w": 0.1471,
+        "h": 0.0537
+      },
+      "px": {
+        "x": 49,
+        "y": 923,
+        "w": 226,
+        "h": 55
+      },
+      "aspect": 4.1091,
+      "palette": [
+        {
+          "hex": "#e9e9e7",
+          "coverage": 0.7997
+        },
+        {
+          "hex": "#abb5b0",
+          "coverage": 0.0786
+        },
+        {
+          "hex": "#4a6661",
+          "coverage": 0.0647
+        },
+        {
+          "hex": "#18382d",
+          "coverage": 0.0382
+        },
+        {
+          "hex": "#0c1d1a",
+          "coverage": 0.0188
+        }
+      ],
+      "detail": {
+        "energy": 29.7163
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "pdf-action",
+      "kind": "control",
+      "note": "Download PDF primary export action in terracotta",
+      "grid": null,
+      "box": {
+        "x": 0.1901,
+        "y": 0.9014,
+        "w": 0.1654,
+        "h": 0.0537
+      },
+      "px": {
+        "x": 292,
+        "y": 923,
+        "w": 254,
+        "h": 55
+      },
+      "aspect": 4.6182,
+      "palette": [
+        {
+          "hex": "#ba6849",
+          "coverage": 0.8508
+        },
+        {
+          "hex": "#cc8c76",
+          "coverage": 0.083
+        },
+        {
+          "hex": "#f7f3ee",
+          "coverage": 0.0508
+        },
+        {
+          "hex": "#e9c6b6",
+          "coverage": 0.0142
+        },
+        {
+          "hex": "#c05040",
+          "coverage": 0.0012
+        }
+      ],
+      "detail": {
+        "energy": 16.3481
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    }
+  ],
+  "compSha256": "3dfa44e01b697fdd8d07ed062a49a9dc7f97fe248395943c48c3e1635766b85e",
+  "regionsSource": {
+    "path": ".impeccable/build/regions.json",
+    "sha256": "6ee91a06243a88c6db77a53f1cd2e631fd300d9cac35e4acebfcc17d46c04c1b"
+  }
+}
