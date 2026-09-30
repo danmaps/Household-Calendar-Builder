@@ -182,6 +182,9 @@ a:focus-visible {
   justify-items: center;
 }
 
+.print-pages { display: none; }
+.pdf-stage { position: fixed; top: 0; left: 0; z-index: -1; display: block; pointer-events: none; }
+
 /* Page boxes use the physical paper aspect ratio. */
 .page {
   width: 100%;
@@ -248,12 +251,13 @@ a:focus-visible {
 .calendar-grid th,
 .calendar-grid td { border: 1px solid var(--line); }
 .calendar-grid th { padding: 0.25rem 0.15rem; font-size: 0.76rem; }
+.weekday-short { display: none; }
 .calendar-grid td { width: 14.285%; height: calc(100% / var(--week-count)); vertical-align: top; padding: 0.25rem; }
 .calendar-grid .is-empty { background: #f7f7f6; }
 .day-number { display: block; font-weight: 650; font-size: 0.85rem; }
 .day-tasks { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 0.2rem; margin-top: 0.2rem; }
 .task-mark { display: inline-grid; grid-template-columns: auto auto; align-items: center; gap: 0.12rem; border-bottom: 2px solid transparent; border-radius: 0.15rem; padding: 0.08rem; }
-.task-mark img { display: block; width: 1.15rem; height: 1.15rem; }
+.task-mark img, .task-mark canvas.pdf-icon { display: block; width: 1.15rem; height: 1.15rem; }
 .task-mark input { width: 0.85rem; height: 0.85rem; margin: 0; }
 
 .task-key {
@@ -267,14 +271,38 @@ a:focus-visible {
 }
 
 .task-key li { display: inline-flex; align-items: center; gap: 0.35rem; }
-.task-key img { width: 1rem; height: 1rem; }
+.task-key img, .task-key canvas.pdf-icon { width: 1rem; height: 1rem; }
 .task-key .swatch { width: 0.65rem; height: 0.65rem; border: 2px solid var(--line); border-radius: 50%; }
 
 @media (max-width: 34rem) {
   .calendar-grid th { font-size: 0.65rem; }
+  .weekday-long { display: none; }
+  .weekday-short { display: inline; }
   .calendar-grid td { padding: 0.12rem; }
   .day-number { font-size: 0.75rem; }
-  .task-mark img { width: 0.95rem; height: 0.95rem; }
+  .task-mark img, .task-mark canvas.pdf-icon { width: 0.95rem; height: 0.95rem; }
+}
+
+@media print {
+  html, body { width: 100%; height: auto; margin: 0; background: #fff; }
+  .app-header, .editor, #preview-heading, #preview-navigation, #preview-warning, .preview-actions, #pages { display: none !important; }
+  .app-main { display: block; margin: 0; padding: 0; }
+  .pane.preview { margin: 0; padding: 0; border: 0; border-radius: 0; }
+  .print-pages { display: block !important; }
+  .print-page {
+    display: grid !important;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .print-page:last-child { break-after: auto; page-break-after: auto; }
 }
 
 @media (max-width: 34rem) {

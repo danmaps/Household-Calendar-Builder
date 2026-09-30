@@ -8,6 +8,7 @@ export const WEEK_STARTS = Object.freeze([0, 1]); // 0 = Sunday, 1 = Monday
 export const PAPER_SIZES = Object.freeze(["letter", "a4"]);
 export const ORIENTATIONS = Object.freeze(["landscape", "portrait"]);
 export const COLOR_MODES = Object.freeze(["monochrome", "color"]);
+export const MARGIN_INCHES = Object.freeze([0.25, 0.5, 0.75, 1]);
 export const TITLE_ALIGNMENTS = Object.freeze(["left", "center", "right"]);
 export const TITLE_SIZES = Object.freeze(["small", "medium", "large"]);
 export const DECORATIONS = Object.freeze(["none", "border", "paw-prints"]);
@@ -29,6 +30,7 @@ export const CALENDAR_DEFAULTS = Object.freeze({
   weekStartsOn: 0,
   paper: "letter",
   orientation: "landscape",
+  marginInches: 0.5,
   colorMode: "monochrome",
   title: "",
   showTitle: false,
@@ -222,6 +224,7 @@ function validateCalendar(calendar, errors) {
   }
   checkEnum(c.paper, PAPER_SIZES, `${path}.paper`, errors);
   checkEnum(c.orientation, ORIENTATIONS, `${path}.orientation`, errors);
+  checkEnum(c.marginInches, MARGIN_INCHES, `${path}.marginInches`, errors);
   checkEnum(c.colorMode, COLOR_MODES, `${path}.colorMode`, errors);
   checkString(c.title, LIMITS.maxTitleLength, `${path}.title`, errors);
   checkBoolean(c.showTitle, `${path}.showTitle`, errors);

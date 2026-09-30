@@ -14,7 +14,7 @@ The first version is a browser-based calendar designer. Users set the month or m
 
 ## Status
 
-The repository contains a static app shell, a versioned calendar configuration model with validation, a deterministic date engine, and a structured editor for month ranges and household task schedules. It also includes a categorized, searchable local icon picker, visual settings, and a live accessible calendar preview with month navigation. Print/PDF export is the next planned step.
+The repository contains a static app shell, a versioned calendar configuration model with validation, a deterministic date engine, a structured editor for month ranges and household task schedules, and a categorized searchable local icon picker. The accessible live preview supports month navigation, and calendars can be printed or downloaded as multi-page PDFs in the browser.
 
 ## Run locally
 
@@ -36,6 +36,8 @@ npm test
 - [Product specification](SPEC.md)
 - [Calendar configuration](docs/configuration.md)
 - [Icon attribution](docs/icon-attribution.md)
+- [PDF export libraries](docs/export-libraries.md)
+- [Print/PDF QA checklist](docs/manual-print-qa.md)
 
 ## Design principles
 

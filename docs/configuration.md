@@ -24,6 +24,7 @@ Unknown fields are rejected rather than silently dropped, so a configuration nev
 | `weekStartsOn` | no | `0` | `0` (Sunday) or `1` (Monday) |
 | `paper` | no | `"letter"` | `"letter"` or `"a4"` |
 | `orientation` | no | `"landscape"` | `"landscape"` or `"portrait"` |
+| `marginInches` | no | `0.5` | `0.25`, `0.5`, `0.75`, or `1` inch |
 | `colorMode` | no | `"monochrome"` | `"monochrome"` or `"color"` |
 | `title` | no | `""` | Text, at most 120 characters. Must be non-empty when `showTitle` is `true`. |
 | `showTitle` | no | `false` | Boolean |
@@ -79,3 +80,7 @@ All calculations use UTC date-only values and do not depend on the machine's loc
 The form exposes calendar month ranges, paper and orientation, week start, color mode, title options, decoration, key and checkbox visibility, and the task fields described above. Tasks can be added, removed, enabled, and reordered. The advanced JSON panel remains available for importing or editing the same normalized configuration.
 
 The symbol picker is built from the IDs in `src/icon-ids.js`, with searchable category groups and local SVG artwork under `assets/icons/`. The picker is a native labeled `<select>` so it supports standard keyboard interaction; the neighboring search field filters its options, and each symbol has a readable name. The bundled artwork source and licensing terms are listed in [`icon-attribution.md`](icon-attribution.md) and `assets/icons/manifest.json`.
+
+## Print and PDF
+
+The **Print calendar** action opens the browser print dialog with one configured month per physical page. The **Download PDF** action renders the same calendar page DOM locally in the browser and downloads a multi-page PDF. `html2canvas` and jsPDF are bundled in `vendor/`, so neither action contacts an external asset host. Their pinned versions and MIT license notices are recorded in [`export-libraries.md`](export-libraries.md).

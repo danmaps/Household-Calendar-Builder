@@ -5,6 +5,7 @@
     "weekStartsOn": 0,
     "paper": "letter",
     "orientation": "landscape",
+    "marginInches": 0.5,
     "colorMode": "monochrome",
     "title": "Dog care · October 2026",
     "showTitle": true,
