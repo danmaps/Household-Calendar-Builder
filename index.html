@@ -20,14 +20,22 @@
       <section id="editor" class="pane editor" aria-labelledby="editor-heading">
         <h2 id="editor-heading">Editor</h2>
 
-        <h3>Calendar settings</h3>
-        <dl id="settings-summary" class="settings-summary"></dl>
+        <form id="calendar-form" novalidate>
+          <h3>Calendar settings</h3>
+          <p class="hint">Choose one month or a consecutive range. Each month becomes one calendar page.</p>
+          <div id="month-range" class="settings-grid"></div>
+          <h3>Household tasks</h3>
+          <div id="task-list" class="task-list"></div>
+          <button type="button" id="add-task">Add task</button>
+        </form>
 
-        <h3><label for="config-json">Configuration (JSON)</label></h3>
-        <p class="hint">Edit the configuration and apply it to update the preview. Dates use <code>YYYY-MM-DD</code>.</p>
-        <textarea id="config-json" spellcheck="false" rows="20" aria-describedby="config-status"></textarea>
+        <details>
+          <summary>Advanced: edit configuration JSON</summary>
+          <p class="hint"><label for="config-json">Edit configuration and apply it to update the calendar. Dates use <code>YYYY-MM-DD</code>.</label></p>
+          <textarea id="config-json" spellcheck="false" rows="20" aria-describedby="config-status"></textarea>
+          <button type="button" id="apply-config">Apply JSON</button>
+        </details>
         <div class="actions">
-          <button type="button" id="apply-config">Apply</button>
           <button type="button" id="load-example">Load October 2026 example</button>
           <button type="button" id="download-config">Download JSON</button>
         </div>
