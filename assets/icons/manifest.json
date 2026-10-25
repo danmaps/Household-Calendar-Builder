@@ -28,6 +28,8 @@
     "hand-sparkles.svg": "hand-sparkles.svg",
     "seedling.svg": "seedling.svg",
     "leaf.svg": "leaf.svg",
+    "shoe-prints.svg": "shoe-prints.svg",
+    "kettlebell.svg": {"source": "Pictogrammers Material Design Icons", "sourceIcon": "kettlebell.svg", "version": "f08b713c8eef826e6bfe826c65240326546648ea", "sourceUrl": "https://raw.githubusercontent.com/Templarian/MaterialDesign/f08b713c8eef826e6bfe826c65240326546648ea/svg/kettlebell.svg", "license": "Apache-2.0", "licenseUrl": "https://www.apache.org/licenses/LICENSE-2.0", "attribution": "Pictogrammers / Material Design Icons contributors", "licenseFiles": ["LICENSE-material-design.txt", "LICENSE-Apache-2.0.txt"]},
     "droplet.svg": "droplet.svg",
     "sun.svg": "sun.svg",
     "utensils.svg": "utensils.svg",

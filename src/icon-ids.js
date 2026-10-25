@@ -40,6 +40,9 @@ export const ICON_IDS = Object.freeze([
   "bell",
   "fire-extinguisher",
   "screwdriver-wrench",
+  // Fitness
+  "kettlebell",
+  "shoe-prints",
   // General
   "star",
   "heart",
@@ -53,6 +56,7 @@ export const ICON_CATEGORIES = Object.freeze({
   Garden: Object.freeze(["seedling", "leaf", "droplet", "sun"]),
   Food: Object.freeze(["utensils", "mug-hot", "cookie-bite"]),
   Maintenance: Object.freeze(["wrench", "fan", "bell", "fire-extinguisher", "screwdriver-wrench"]),
+  Fitness: Object.freeze(["kettlebell", "shoe-prints"]),
   General: Object.freeze(["star", "heart", "circle-check"]),
 });
 
